@@ -224,6 +224,37 @@
   .sc-btn:hover{background:rgba(79,187,176,0.24);}
   .sc-btn.danger{background:rgba(193,68,59,0.12); border-color:rgba(193,68,59,0.35); color:#E5958C;}
   .sc-btn.danger:hover{background:rgba(193,68,59,0.22);}
+  .scenario-card-example{border-color:rgba(217,140,43,0.4); background:rgba(217,140,43,0.06);}
+  .sc-example-badge{
+    display:inline-block; font-size:9px; font-weight:700; letter-spacing:.08em;
+    color:#0C2338; background:#D98C2B; border-radius:4px; padding:2px 6px; margin-bottom:6px;
+  }
+
+  /* ---------- Scenario detail modal ---------- */
+  .scenario-detail-overlay{
+    display:none; position:fixed; inset:0; z-index:10000; background:rgba(11,36,54,0.65);
+    padding:40px 20px; overflow-y:auto;
+  }
+  .scenario-detail-overlay.visible{display:block;}
+  .scenario-detail-card{
+    position:relative; max-width:920px; margin:0 auto; background:var(--bg);
+    border-radius:16px; padding:36px 40px 40px; box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  }
+  .scenario-detail-close{
+    position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%;
+    background:#F3F5F7; border:1px solid var(--line); color:var(--ink-soft); font-size:18px;
+    cursor:pointer; line-height:1;
+  }
+  .scenario-detail-close:hover{background:#E8ECEF;}
+  .scenario-detail-badge{
+    display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:.08em;
+    color:#fff; background:var(--pcai); border-radius:4px; padding:3px 8px; margin-bottom:10px;
+  }
+  #scenarioDetailTitle{font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; margin:0 0 14px; color:var(--ink);}
+  .scenario-detail-narrative{font-size:13.5px; line-height:1.65; color:var(--ink-soft); margin-bottom:20px;}
+  .scenario-detail-narrative p{margin:0 0 10px;}
+  .scenario-detail-narrative b{color:var(--ink);}
+
   .usage-source-card{
     background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09);
     border-radius:9px; padding:12px; margin-bottom:10px;
@@ -406,6 +437,7 @@
   @media print{
     body{background:#fff;}
     .chart-tooltip{display:none !important;}
+    .scenario-detail-overlay{display:none !important;}
     .app{display:block;}
     .sidebar{display:none !important;}
     .topbar{display:none !important;}
@@ -807,6 +839,48 @@
   </main>
 </div>
 
+<div class="scenario-detail-overlay" id="scenarioDetailOverlay">
+  <div class="scenario-detail-card">
+    <button class="scenario-detail-close" id="scenarioDetailClose" title="Close">×</button>
+    <div class="scenario-detail-badge" id="scenarioDetailBadge"></div>
+    <h2 id="scenarioDetailTitle">Scenario</h2>
+    <div id="scenarioDetailNarrative" class="scenario-detail-narrative"></div>
+
+    <div class="two-col-tables" style="margin-top:6px;">
+      <div class="table-card">
+        <h3>Usage Sources</h3>
+        <table class="data-table">
+          <thead><tr><th>Source</th><th>Tokens/mo</th><th>Spend/mo</th><th>Offload</th><th>Growth</th></tr></thead>
+          <tbody id="scenarioDetailUsageBody"></tbody>
+        </table>
+      </div>
+      <div class="table-card">
+        <h3>On-Prem Configuration</h3>
+        <table class="data-table"><tbody id="scenarioDetailConfigBody"></tbody></table>
+      </div>
+    </div>
+
+    <div class="table-card" style="margin-top:14px;">
+      <h3>Model Mix</h3>
+      <table class="data-table">
+        <thead><tr><th>Model</th><th>Tok/s per GPU</th><th>Mix %</th></tr></thead>
+        <tbody id="scenarioDetailMixBody"></tbody>
+      </table>
+    </div>
+
+    <div class="roi-hero" style="margin-top:14px;">
+      <div class="roi-grid cols-4">
+        <div class="roi-item"><div class="lbl">3-Yr Cloud TCO</div><div class="val" id="scenarioDetailCloud">—</div></div>
+        <div class="roi-item"><div class="lbl">3-Yr HPE AI Hybrid TCO</div><div class="val" id="scenarioDetailPcai">—</div></div>
+        <div class="roi-item"><div class="lbl">3-Yr Net Savings</div><div class="val gold" id="scenarioDetailNet">—</div></div>
+        <div class="roi-item"><div class="lbl">3-Yr ROI</div><div class="val gold" id="scenarioDetailRoi">—</div></div>
+      </div>
+    </div>
+
+    <button class="add-row-btn" id="scenarioDetailLoadBtn" style="width:100%; text-align:center; margin-top:16px;">Load This Scenario</button>
+  </div>
+</div>
+
 <script>
 /* ---------------------------------------------------------
    MODEL LIBRARY — 50 open-weight models
@@ -1037,6 +1111,56 @@ const DEFAULTS = {
   capex: '1,000,000',
   ops: '400,000',
 };
+
+/* ---------------------------------------------------------
+   EXAMPLE SCENARIOS — curated, realistic starting points a rep can
+   load to show a customer the on-prem value story for two common
+   patterns. Results are computed live at page load (see
+   buildExampleScenarios) so the numbers shown always match the
+   current calculation engine, never a stale hardcoded figure.
+--------------------------------------------------------- */
+const EXAMPLE_SCENARIO_DEFS = [
+  {
+    id: 'example-coding',
+    name: 'AI Coding Assistant — 1,000 Developers',
+    narrative: `<p><b>Who this is:</b> An engineering organization with 1,000 developers using AI coding tools daily — fast inline autocomplete for everyday code, plus a heavier agentic assistant (multi-file context, chat, tool-calling) for more involved work.</p>
+      <p><b>Why on-prem fits:</b> Autocomplete traffic is extremely high-frequency, latency-sensitive, and highly repetitive — exactly the profile that benefits most from co-located, predictable-cost inference. The heavier agentic assistant is modeled with a lower offload share, reflecting that the hardest reasoning bursts may still lean on a frontier cloud model while routine agentic steps move on-prem.</p>
+      <p><b>Model mix:</b> A fast 8B model absorbs the bulk of low-latency autocomplete traffic; Qwen2.5-Coder 32B carries primary code generation and chat; a Mixture-of-Experts code model and a reasoning-distilled model cover harder multi-file work and debugging; a lightweight model rounds out simple completions.</p>
+      <p><b>What to watch:</b> Growth is modeled deliberately conservatively (5–8%/month) — realistic for steady rollout across a dev org rather than a runaway adoption curve. Check the capacity utilization chart to see how much headroom this configuration leaves for that growth.</p>`,
+    inputs: { gpuType:'H200', h200:16, capFactor:0.80, uncounted:0.10, capex:1000000, ops:400000 },
+    usageSources: [
+      { name:'GitHub Copilot (Autocomplete)', mode:'aic', aic:3000000, tokPerAic:1000, tokensDirect:3000000000, offload:0.85, spend:150000, growth:0.05 },
+      { name:'Agentic Coding Assistant (Chat + Tool Use)', mode:'tokens', aic:1000000, tokPerAic:1000, tokensDirect:25000000000, offload:0.60, spend:180000, growth:0.08 },
+    ],
+    mixRows: [
+      {name:"Llama 3.1 8B", tokS:computeTokS(8,'dense'), mix:30},
+      {name:"Qwen2.5-Coder 32B", tokS:computeTokS(32,'dense'), mix:35},
+      {name:"DeepSeek-Coder-V2 (236B/21B active)", tokS:computeTokS(21,'moe'), mix:15},
+      {name:"StarCoder2 15B", tokS:computeTokS(15,'dense'), mix:10},
+      {name:"DeepSeek-R1-Distill-Qwen-32B", tokS:computeTokS(32,'reasoning'), mix:10},
+    ],
+  },
+  {
+    id: 'example-agentic',
+    name: 'Agentic AI Mix — 600 General + 400 Power Users',
+    narrative: `<p><b>Who this is:</b> A 1,000-person organization split between 600 general users asking questions against an internal knowledge base (RAG) and 400 power users running more complex, multi-step agentic workflows — research, multi-tool orchestration, longer reasoning chains.</p>
+      <p><b>Why on-prem fits:</b> RAG/knowledge-base traffic is predictable, often touches sensitive internal documents, and is a textbook on-prem fit — modeled here at a high 90% offload. Power-user agentic workflows are more variable and sometimes need the strongest available reasoning model, so they're modeled at a lower 55% offload, reflecting a genuine hybrid approach rather than an all-or-nothing migration.</p>
+      <p><b>Model mix:</b> A fast general model handles the bulk of RAG Q&A; a stronger mid-size model covers harder general knowledge questions; a reasoning-distilled model and a large MoE model handle the power users' complex multi-step, multi-tool tasks; a small model handles lightweight routing/classification steps inside agent pipelines.</p>
+      <p><b>What to watch:</b> Uncounted tokens are set higher (15%) than the coding scenario — agentic tool-calling and intermediate reasoning steps genuinely produce more hidden token overhead than straightforward autocomplete. This scenario also uses the B300 GPU option to show the throughput headroom available for heavier reasoning-model workloads.</p>`,
+    inputs: { gpuType:'B300', h200:4, capFactor:0.80, uncounted:0.15, capex:400000, ops:160000 },
+    usageSources: [
+      { name:'RAG Knowledge Assistant', mode:'tokens', aic:1000000, tokPerAic:1000, tokensDirect:2100000000, offload:0.90, spend:80000, growth:0.06 },
+      { name:'Agentic Power-User Workflows', mode:'tokens', aic:1000000, tokPerAic:1000, tokensDirect:6000000000, offload:0.55, spend:220000, growth:0.10 },
+    ],
+    mixRows: [
+      {name:"Llama 3.1 8B", tokS:computeTokS(8,'dense'), mix:35},
+      {name:"Qwen2.5 32B", tokS:computeTokS(32,'dense'), mix:25},
+      {name:"DeepSeek-R1-Distill-Qwen-32B", tokS:computeTokS(32,'reasoning'), mix:20},
+      {name:"Qwen3 235B (235B/22B active)", tokS:computeTokS(22,'moe'), mix:15},
+      {name:"Gemma 2 9B", tokS:computeTokS(9,'dense'), mix:5},
+    ],
+  },
+];
 
 const ids = [];
 const rangeIds = ['in_uncounted','in_capfactor'];
@@ -1623,7 +1747,9 @@ async function persistScenarios(){
     : 'Scenarios are kept for this browser session only (not saved to your account in this context).';
   if(!hasCloudStorage) return;
   try{
-    await window.storage.set('pcai_scenarios', JSON.stringify(scenarios), false);
+    // Example scenarios are always re-derived at load time — never persisted.
+    const toSave = scenarios.filter(s=>!s.isExample);
+    await window.storage.set('pcai_scenarios', JSON.stringify(toSave), false);
   }catch(e){
     console.warn('Scenario storage unavailable, continuing in-session only:', e);
     document.getElementById('scenarioStorageNote').textContent = 'Scenarios are kept for this browser session only (storage unavailable).';
@@ -1631,6 +1757,7 @@ async function persistScenarios(){
 }
 
 async function hydrateScenarios(){
+  const examples = scenarios.filter(s=>s.isExample);
   if(!hasCloudStorage){
     document.getElementById('scenarioStorageNote').textContent = 'Scenarios are kept for this browser session only (not saved to your account in this context).';
     return;
@@ -1638,7 +1765,7 @@ async function hydrateScenarios(){
   try{
     const res = await window.storage.get('pcai_scenarios', false);
     if(res && res.value){
-      scenarios = JSON.parse(res.value);
+      scenarios = [...examples, ...JSON.parse(res.value)];
       renderScenarioList();
       renderScenarioComparison();
     }
@@ -1662,6 +1789,60 @@ function resetToDefaults(){
   renderMixTable();
   document.querySelectorAll('.fmt-num').forEach(el=>formatWithCommas(el));
   compute();
+}
+
+// Temporarily loads each example's inputs, runs the real compute() engine to
+// get accurate results, then restores whatever the user currently has entered
+// — so the example scenario cards always show live, formula-accurate numbers
+// without disturbing the user's own in-progress inputs.
+function buildExampleScenarios(){
+  const savedUsageSources = JSON.parse(JSON.stringify(usageSources));
+  const savedMixRows = JSON.parse(JSON.stringify(mixRows));
+  const savedOpsManuallySet = opsManuallySet;
+  const savedFields = {};
+  ['in_gpuType','in_gpuCount','in_capfactor','in_uncounted','in_capex','in_ops'].forEach(id=>{
+    savedFields[id] = document.getElementById(id).value;
+  });
+
+  const built = EXAMPLE_SCENARIO_DEFS.map(def=>{
+    usageSources = JSON.parse(JSON.stringify(def.usageSources));
+    mixRows = JSON.parse(JSON.stringify(def.mixRows));
+    document.getElementById('in_gpuType').value = def.inputs.gpuType;
+    document.getElementById('in_gpuCount').value = def.inputs.h200;
+    document.getElementById('in_capfactor').value = def.inputs.capFactor;
+    document.getElementById('in_uncounted').value = def.inputs.uncounted;
+    document.getElementById('in_capex').value = def.inputs.capex;
+    document.getElementById('in_ops').value = def.inputs.ops;
+    renderUsageSources();
+    renderMixTable();
+    compute();
+    return {
+      id: def.id,
+      name: def.name,
+      narrative: def.narrative,
+      isExample: true,
+      timestamp: Date.now(),
+      inputs: getInputs(),
+      usageSources: JSON.parse(JSON.stringify(def.usageSources)),
+      mixRows: JSON.parse(JSON.stringify(def.mixRows)),
+      results: {
+        tco3Cloud: lastResults.tco3Cloud, tco3Pcai: lastResults.tco3Pcai,
+        netSavings3: lastResults.netSavings3, roi3Pct: lastResults.roi3Pct,
+        paybackMonths: lastResults.paybackMonths, gpuType: lastResults.gpuType, h200: lastResults.h200,
+      },
+    };
+  });
+
+  // restore whatever was there before
+  usageSources = savedUsageSources;
+  mixRows = savedMixRows;
+  opsManuallySet = savedOpsManuallySet;
+  Object.keys(savedFields).forEach(id=>{ document.getElementById(id).value = savedFields[id]; });
+  renderUsageSources();
+  renderMixTable();
+  compute();
+
+  return built;
 }
 
 function saveScenario(){
@@ -1740,12 +1921,14 @@ function renderScenarioList(){
   wrap.innerHTML = scenarios.map(s=>{
     const gpuShort = (GPU_TYPES[s.inputs.gpuType] || {}).short || s.inputs.gpuType;
     return `
-    <div class="scenario-card">
+    <div class="scenario-card${s.isExample?' scenario-card-example':''}">
+      ${s.isExample?'<div class="sc-example-badge">EXAMPLE</div>':''}
       <div class="sc-name">${escapeHtml(s.name)}</div>
       <div class="sc-stats">${gpuShort} (${s.inputs.h200}×) · ROI ${s.results.roi3Pct.toFixed(0)}% · ${fmtMoneyCompact(s.results.netSavings3)} net</div>
       <div class="sc-actions">
         <button class="sc-btn" data-act="load" data-id="${s.id}">Load</button>
-        <button class="sc-btn danger" data-act="delete" data-id="${s.id}">Delete</button>
+        <button class="sc-btn" data-act="details" data-id="${s.id}">Details</button>
+        ${s.isExample?'':'<button class="sc-btn danger" data-act="delete" data-id="'+s.id+'">Delete</button>'}
       </div>
     </div>
   `;
@@ -1755,6 +1938,7 @@ function renderScenarioList(){
       const id = e.target.dataset.id, act = e.target.dataset.act;
       if(act==='load') loadScenario(id);
       else if(act==='delete') deleteScenario(id);
+      else if(act==='details') openScenarioDetail(id);
     });
   });
 }
@@ -1780,6 +1964,52 @@ function renderScenarioComparison(){
   document.getElementById('scenarioTable').innerHTML = scenarios.map(s=>
     `<tr><td>${escapeHtml(s.name)}</td><td>${s.results.roi3Pct.toFixed(0)}%</td><td>${fmtMoneyCompact(s.results.netSavings3)}</td></tr>`
   ).join('');
+}
+
+let scenarioDetailOpenId = null;
+
+function openScenarioDetail(id){
+  const s = scenarios.find(x=>x.id===id);
+  if(!s) return;
+  scenarioDetailOpenId = id;
+  const gpu = GPU_TYPES[s.inputs.gpuType] || GPU_TYPES.H200;
+
+  document.getElementById('scenarioDetailBadge').style.display = s.isExample ? '' : 'none';
+  document.getElementById('scenarioDetailBadge').textContent = 'EXAMPLE SCENARIO';
+  document.getElementById('scenarioDetailTitle').textContent = s.name;
+  document.getElementById('scenarioDetailNarrative').innerHTML = s.narrative || '<p>Custom scenario saved from the sidebar. Load it to see and edit its full configuration.</p>';
+
+  document.getElementById('scenarioDetailUsageBody').innerHTML = s.usageSources.map(u=>{
+    const tokens = u.mode==='tokens' ? u.tokensDirect : u.aic*u.tokPerAic;
+    const modeLabel = u.mode==='tokens' ? 'Tokens' : 'AIC';
+    return `<tr><td>${escapeHtml(u.name)} (${modeLabel})</td><td>${fmtInt(tokens)}</td><td>${fmtMoneyCompact(u.spend||0)}</td><td>${Math.round((u.offload!=null?u.offload:1)*100)}%</td><td>${Math.round((u.growth!=null?u.growth:0.05)*100)}%</td></tr>`;
+  }).join('');
+
+  const configRows = [
+    ['GPU Type', escapeHtml(gpu.label)],
+    ['GPU Count', s.inputs.h200],
+    ['Useful Capacity Factor', fmtPct(s.inputs.capFactor,0)],
+    ['Uncounted Tokens', fmtPct(s.inputs.uncounted,0)],
+    ['Annualized Capex', fmtMoney0(s.inputs.capex)],
+    ['Operational Costs', fmtMoney0(s.inputs.ops)],
+  ];
+  document.getElementById('scenarioDetailConfigBody').innerHTML = configRows.map(r=>`<tr><td>${r[0]}</td><td style="text-align:right;">${r[1]}</td></tr>`).join('');
+
+  document.getElementById('scenarioDetailMixBody').innerHTML = s.mixRows.map(r=>
+    `<tr><td>${escapeHtml(r.name)}</td><td>${fmtInt(r.tokS)}</td><td>${r.mix}%</td></tr>`
+  ).join('');
+
+  document.getElementById('scenarioDetailCloud').textContent = fmtMoney0(s.results.tco3Cloud);
+  document.getElementById('scenarioDetailPcai').textContent = fmtMoney0(s.results.tco3Pcai);
+  document.getElementById('scenarioDetailNet').textContent = fmtMoney0(s.results.netSavings3);
+  document.getElementById('scenarioDetailRoi').textContent = s.results.roi3Pct.toFixed(0)+'%';
+
+  document.getElementById('scenarioDetailOverlay').classList.add('visible');
+}
+
+function closeScenarioDetail(){
+  document.getElementById('scenarioDetailOverlay').classList.remove('visible');
+  scenarioDetailOpenId = null;
 }
 
 /* ---------------------------------------------------------
@@ -1848,6 +2078,19 @@ document.getElementById('addUsageSourceBtn').addEventListener('click', ()=>{
 });
 document.getElementById('in_gpuType').addEventListener('input', compute);
 document.getElementById('in_gpuCount').addEventListener('input', compute);
+document.getElementById('scenarioDetailClose').addEventListener('click', closeScenarioDetail);
+document.getElementById('scenarioDetailOverlay').addEventListener('click', e=>{
+  if(e.target.id === 'scenarioDetailOverlay') closeScenarioDetail();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closeScenarioDetail();
+});
+document.getElementById('scenarioDetailLoadBtn').addEventListener('click', ()=>{
+  if(scenarioDetailOpenId){
+    loadScenario(scenarioDetailOpenId);
+    closeScenarioDetail();
+  }
+});
 
 renderUsageSources();
 renderMixTable();
@@ -1855,6 +2098,9 @@ populateModelPicker();
 populateGpuCountSelect();
 updatePrintHeader();
 compute();
+scenarios = buildExampleScenarios();
+renderScenarioList();
+renderScenarioComparison();
 hydrateScenarios();
 </script>
 </body>
