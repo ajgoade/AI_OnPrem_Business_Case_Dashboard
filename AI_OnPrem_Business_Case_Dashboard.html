@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPE AI Hybrid Tokenomics Business Case</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cg%20transform%3D%22translate%288%2C24.7%29%20scale%280.857%29%22%3E%3Cpath%20fill%3D%22%2300B388%22%20d%3D%22M0.617%2C0.327%20L0.617%2C16.188%20L55.835%2C16.188%20L55.835%2C0.327%20L0.617%2C0.327%20Z%20M52.384%2C12.737%20L4.068%2C12.737%20L4.068%2C3.778%20L52.384%2C3.778%20L52.384%2C12.737%20Z%22/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-0:#081826;
+    --navy-1:#0C2338;
+    --navy-2:#123353;
+    --steel:#2C5677;
+    --bg:#F3F5F7;
+    --card:#FFFFFF;
+    --ink:#131C26;
+    --ink-soft:#57646F;
+    --ink-faint:#8A97A2;
+    --line:#E2E7EB;
+    --line-strong:#CBD3D9;
+    --cloud:#D98C2B;
+    --cloud-soft:#F7E4C6;
+    --pcai:#1E8F84;
+    --pcai-soft:#CDEAE6;
+    --savings:#3C8A56;
+    --warn:#C1443B;
+    --gold:#D98C2B;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(10,25,40,0.06), 0 4px 16px rgba(10,25,40,0.05);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.num-display{font-family:'Space Grotesk',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- Header / hero ---------- */
+  .topbar{
+    background:linear-gradient(135deg,var(--navy-0) 0%, var(--navy-2) 100%);
+    color:#EAF1F6;
+    padding:22px 28px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topbar::after{
+    content:"";
+    position:absolute; right:-60px; top:-60px; width:280px; height:280px;
+    background:radial-gradient(circle, rgba(30,143,132,0.35) 0%, rgba(30,143,132,0) 70%);
+  }
+  .topbar-row{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+    position:relative; z-index:1; flex-wrap:wrap;
+  }
+  .brand-block .eyebrow{
+    text-transform:uppercase; letter-spacing:.14em; font-size:11px; font-weight:600;
+    color:#7FB8AF; margin:0 0 6px;
+  }
+  .brand-block h1{
+    font-size:26px; font-weight:700; margin:0 0 6px; letter-spacing:-0.01em; color:#fff;
+  }
+  .brand-block p{
+    margin:0; color:#AFC0CC; font-size:13.5px; max-width:540px; line-height:1.5;
+  }
+  .deal-field{
+    display:flex; flex-direction:column; gap:4px; min-width:220px;
+  }
+  .deal-field label{font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#8FA5B4; font-weight:600;}
+  .deal-field input{
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18);
+    color:#fff; border-radius:7px; padding:8px 10px; font-size:14px; font-family:'Inter',sans-serif;
+    outline:none;
+  }
+  .deal-field input::placeholder{color:#7C8E9A;}
+  .deal-field input:focus{border-color:#4FBBB0;}
+  .print-btn{
+    background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.22); color:#EAF1F6;
+    border-radius:7px; padding:9px 14px; font-size:12.5px; font-weight:600; cursor:pointer;
+    font-family:'Inter',sans-serif; white-space:nowrap; height:38px;
+  }
+  .print-btn:hover{background:rgba(255,255,255,0.18);}
+  .print-only{display:none;}
+
+  .hero-strip{
+    display:grid; grid-template-columns:1.3fr repeat(4, 1fr); gap:1px;
+    background:rgba(255,255,255,0.10);
+    border-radius:12px; overflow:hidden; margin-top:20px;
+    position:relative; z-index:1;
+  }
+  .hero-cell{
+    background:rgba(8,20,32,0.55); padding:16px 18px; min-width:0;
+  }
+  .hero-cell.emph{background:rgba(30,143,132,0.22);}
+  .hero-cell .hl{font-size:10.5px; text-transform:uppercase; letter-spacing:.09em; color:#9FB4C0; font-weight:600; margin-bottom:6px;}
+  .hero-cell .hv{font-size:24px; font-weight:700; color:#fff; line-height:1.1;}
+  .hero-cell .hv small{font-size:13px; font-weight:500; color:#B9C9D3;}
+  .hero-cell .hs{font-size:11.5px; color:#8FA5B4; margin-top:5px;}
+  .hero-cell .hv.pos{color:#7ED9A8;}
+
+  /* ---------- Layout ---------- */
+  .app{
+    display:grid; grid-template-columns:340px 1fr;
+    align-items:start;
+  }
+  @media (max-width:980px){ .app{grid-template-columns:1fr;} .sidebar{position:relative; top:0;} }
+
+  .sidebar{
+    background:var(--navy-1); color:#DCE6EC;
+    padding:18px 16px 40px; min-height:100vh;
+    position:sticky; top:0;
+  }
+  .sidebar h2{
+    font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:#6F869A;
+    margin:22px 4px 10px; font-weight:600;
+  }
+  .sidebar h2:first-child{margin-top:4px;}
+  .panel{
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07);
+    border-radius:10px; padding:14px; margin-bottom:6px;
+  }
+  .field{margin-bottom:12px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:12px; color:#B7C6D0; margin-bottom:5px; font-weight:500;
+  }
+  .field label .unit{font-size:10.5px; color:#6F869A; font-family:'IBM Plex Mono',monospace;}
+  .field .note{font-size:10.5px; color:#6F869A; margin-top:4px; line-height:1.4;}
+  .in-wrap{position:relative; display:flex; align-items:center;}
+  .in-wrap .prefix{position:absolute; left:9px; color:#7C8E9A; font-size:13px; font-family:'IBM Plex Mono',monospace;}
+  .field input[type=number], .field input[type=text]{
+    width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    color:#EAF1F6; border-radius:7px; padding:8px 10px; font-size:13.5px;
+    font-family:'IBM Plex Mono',monospace; outline:none;
+  }
+  .field input.has-prefix{padding-left:22px;}
+  .field input:focus{border-color:#4FBBB0; background:rgba(255,255,255,0.09);}
+  .field input[type=range]{
+    -webkit-appearance:none; width:100%; height:8px; background:rgba(255,255,255,0.16);
+    border-radius:5px; padding:0; margin:14px 0 6px; cursor:pointer; outline:none;
+  }
+  .field input[type=range]:focus{background:rgba(255,255,255,0.24);}
+  .field input[type=range]::-webkit-slider-runnable-track{height:8px; border-radius:5px; background:transparent;}
+  .field input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:26px; height:26px; border-radius:50%;
+    background:#4FBBB0; cursor:pointer; border:3px solid #0C2338; margin-top:-9px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.35); transition:transform .12s ease, background .12s ease;
+  }
+  .field input[type=range]:hover::-webkit-slider-thumb{background:#63CCC1; transform:scale(1.08);}
+  .field input[type=range]:active::-webkit-slider-thumb{background:#7FD9CB; transform:scale(1.18);}
+  .field input[type=range]::-moz-range-track{height:8px; border-radius:5px; background:rgba(255,255,255,0.16);}
+  .field input[type=range]::-moz-range-thumb{
+    width:22px; height:22px; border-radius:50%; background:#4FBBB0; cursor:pointer;
+    border:3px solid #0C2338; box-shadow:0 2px 6px rgba(0,0,0,0.35); transition:transform .12s ease, background .12s ease;
+  }
+  .field input[type=range]:hover::-moz-range-thumb{background:#63CCC1; transform:scale(1.08);}
+  .field input[type=range]:active::-moz-range-thumb{background:#7FD9CB; transform:scale(1.18);}
+  .field label .unit.big{
+    font-size:14px; color:#7FD9CB; font-weight:700; background:rgba(79,187,176,0.14);
+    border-radius:5px; padding:2px 8px; font-family:'IBM Plex Mono',monospace;
+  }
+  .badge-new{
+    display:inline-block; font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:#0C2338; background:#F4C46A; border-radius:4px; padding:1px 5px; margin-left:6px; vertical-align:1px;
+  }
+
+  .mix-table{width:100%; border-collapse:collapse; font-size:12px;}
+  .mix-table th{
+    text-align:left; font-weight:600; color:#6F869A; font-size:10px; text-transform:uppercase;
+    letter-spacing:.06em; padding:0 4px 6px; border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .mix-table td{padding:4px 3px; vertical-align:middle;}
+  .mix-table input[type=text]{width:100%; font-size:11.5px; padding:5px 6px;}
+  .mix-table input[type=number]{width:100%; font-size:11.5px; padding:5px 6px; text-align:right;}
+  .mix-table input.fmt-num{text-align:right;}
+  .mix-table .rm-btn{
+    background:none; border:none; color:#8A5555; cursor:pointer; font-size:15px; padding:0 4px; line-height:1;
+  }
+  .mix-table .rm-btn:hover{color:#E06A6A;}
+  .mix-foot{display:flex; justify-content:space-between; align-items:center; margin-top:8px;}
+  .add-row-btn{
+    background:rgba(79,187,176,0.14); border:1px solid rgba(79,187,176,0.4); color:#7FD9CB;
+    border-radius:6px; padding:5px 10px; font-size:11.5px; cursor:pointer; font-family:'Inter',sans-serif; font-weight:500;
+  }
+  .add-row-btn:hover{background:rgba(79,187,176,0.24);}
+  .reset-btn{
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.14); color:#9FB4C0;
+    border-radius:6px; padding:5px 10px; font-size:11.5px; cursor:pointer; font-family:'Inter',sans-serif; font-weight:500;
+  }
+  .reset-btn:hover{background:rgba(255,255,255,0.10); color:#DCE6EC;}
+  .advanced-details{margin-top:2px;}
+  .advanced-details summary{
+    font-size:11.5px; color:#9FB4C0; cursor:pointer; list-style:none;
+    display:flex; align-items:center; gap:6px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.05em; padding:6px 2px;
+  }
+  .advanced-details summary::-webkit-details-marker{display:none;}
+  .advanced-details summary::marker{display:none; content:'';}
+  .advanced-details .chevron{transition:transform .15s ease; color:#4FBBB0; font-size:10.5px;}
+  .advanced-details[open] .chevron{transform:rotate(90deg);}
+  .advanced-details:hover summary{color:#DCE6EC;}
+  .advanced-details .advanced-body{margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08);}
+  .mix-total{font-size:11.5px; font-family:'IBM Plex Mono',monospace; color:#B7C6D0;}
+  .mix-total.bad{color:#E5958C;}
+  .mix-note{font-size:10.5px; color:#6F869A; margin-top:8px; line-height:1.4;}
+  .scenario-card{
+    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.09);
+    border-radius:8px; padding:10px 11px; margin-top:9px;
+  }
+  .scenario-card .sc-name{font-size:12.5px; font-weight:600; color:#EAF1F6; margin-bottom:3px;}
+  .scenario-card .sc-stats{font-size:11px; color:#9FB4C0; font-family:'IBM Plex Mono',monospace; margin-bottom:8px;}
+  .scenario-card .sc-actions{display:flex; gap:6px;}
+  .sc-btn{
+    flex:1; background:rgba(79,187,176,0.14); border:1px solid rgba(79,187,176,0.35); color:#7FD9CB;
+    border-radius:5px; padding:5px 0; font-size:11px; cursor:pointer; font-family:'Inter',sans-serif; font-weight:500;
+  }
+  .sc-btn:hover{background:rgba(79,187,176,0.24);}
+  .sc-btn.danger{background:rgba(193,68,59,0.12); border-color:rgba(193,68,59,0.35); color:#E5958C;}
+  .sc-btn.danger:hover{background:rgba(193,68,59,0.22);}
+  .usage-source-card{
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.09);
+    border-radius:9px; padding:12px; margin-bottom:10px;
+  }
+  .usage-source-card:last-child{margin-bottom:2px;}
+  .usage-source-header{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+  .usage-name-input{
+    flex:1; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.16);
+    color:#EAF1F6; border-radius:6px; padding:7px 9px; font-size:13px; font-weight:600;
+    font-family:'Inter',sans-serif; outline:none;
+  }
+  .usage-name-input:focus{border-color:#4FBBB0; background:rgba(255,255,255,0.1);}
+  .usage-name-input::placeholder{color:#7C8E9A; font-weight:400;}
+  .usage-rm-btn{
+    flex-shrink:0; background:none; border:none; color:#8A5555; cursor:pointer;
+    font-size:18px; line-height:1; padding:2px 5px;
+  }
+  .usage-rm-btn:hover{color:#E06A6A;}
+  .usage-source-card .field{margin-bottom:9px;}
+  .usage-source-card .field:last-child{margin-bottom:0;}
+  .usage-row-total{
+    font-size:11px; color:#7FD9CB; font-family:'IBM Plex Mono',monospace; font-weight:600;
+    margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.1);
+  }
+  .usage-mode-select{
+    width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    color:#EAF1F6; border-radius:7px; padding:7px 9px; font-size:12.5px;
+    font-family:'Inter',sans-serif; outline:none;
+  }
+  .usage-mode-select:focus{border-color:#4FBBB0; background:rgba(255,255,255,0.09);}
+  .usage-mode-select option{background:#0C2338; color:#EAF1F6;}
+  #modelPicker, #in_gpuType, #in_gpuCount{
+    width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    color:#EAF1F6; border-radius:7px; padding:8px 10px; font-size:12.5px;
+    font-family:'Inter',sans-serif; outline:none;
+  }
+  #modelPicker:focus, #in_gpuType:focus, #in_gpuCount:focus{border-color:#4FBBB0; background:rgba(255,255,255,0.09);}
+  #modelPicker option, #in_gpuType option, #in_gpuCount option{background:#0C2338; color:#EAF1F6;}
+
+  /* ---------- Main content ---------- */
+  main{padding:26px 30px 60px;}
+  .section{margin-bottom:34px;}
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:8px;}
+  .section-head h2{font-size:17px; margin:0; font-weight:600; color:var(--ink); letter-spacing:-0.01em;}
+  .section-head .sub{font-size:12.5px; color:var(--ink-soft);}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  @media (max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .stat-card .lbl{font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; font-weight:600; margin-bottom:6px;}
+  .stat-card .val{font-size:21px; font-weight:700; color:var(--ink); line-height:1.1;}
+  .stat-card .val small{font-size:12px; font-weight:500; color:var(--ink-faint);}
+  .stat-card .sub{font-size:11.5px; color:var(--ink-faint); margin-top:5px;}
+  .stat-card.accent-pcai{border-left:3px solid var(--pcai);}
+  .stat-card.accent-cloud{border-left:3px solid var(--cloud);}
+  .stat-card.accent-savings{border-left:3px solid var(--savings);}
+
+  .findings{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px; box-shadow:var(--shadow);
+  }
+  .findings ul{margin:0; padding-left:0; list-style:none;}
+  .findings li{
+    display:flex; gap:10px; font-size:13.5px; line-height:1.55; color:var(--ink); padding:7px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .findings li:last-child{border-bottom:none;}
+  .findings li .dot{color:var(--pcai); font-weight:700; flex-shrink:0;}
+  .findings .warn-line{color:var(--warn); font-weight:600;}
+
+  .roi-hero{
+    background:linear-gradient(135deg,#0F2A3E, #163C4D 60%, #124234);
+    border-radius:14px; padding:22px 24px; color:#fff; box-shadow:var(--shadow);
+  }
+  .roi-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-top:4px;}
+  @media (max-width:900px){.roi-grid{grid-template-columns:repeat(2,1fr);}}
+  .roi-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+  @media (max-width:900px){.roi-grid.cols-4{grid-template-columns:repeat(2,1fr);}}
+  .roi-item .lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:#9FC7BE; font-weight:600; margin-bottom:6px;}
+  .roi-item .val{font-size:25px; font-weight:700; letter-spacing:-0.01em;}
+  .roi-item .val.gold{color:#F4C46A;}
+  .roi-item .val small{font-size:13px; font-weight:500; opacity:.75;}
+
+  .chart-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:14px; margin-top:16px;}
+  @media (max-width:980px){.chart-grid{grid-template-columns:1fr;}}
+
+  .before-after-grid{display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:stretch;}
+  @media (max-width:760px){.before-after-grid{grid-template-columns:1fr;}}
+  @media (max-width:760px){.ba-arrow{display:none;}}
+  .ba-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:18px 20px; box-shadow:var(--shadow);
+  }
+  .ba-before{border-left:4px solid var(--cloud);}
+  .ba-after{border-left:4px solid var(--pcai);}
+  .ba-label{font-size:11px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; color:var(--ink-soft); margin-bottom:12px;}
+  .ba-row{display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px dashed var(--line); font-size:13.5px;}
+  .ba-row span:first-child{color:var(--ink-soft);}
+  .ba-val{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--ink);}
+  .ba-total{display:flex; justify-content:space-between; align-items:baseline; padding-top:11px; margin-top:5px; font-size:15px; font-weight:700;}
+  .ba-total span:first-child{color:var(--ink);}
+  .ba-after .ba-total span:last-child{font-family:'Space Grotesk',sans-serif; color:var(--pcai);}
+  .ba-before .ba-total span:last-child{font-family:'Space Grotesk',sans-serif; color:var(--cloud);}
+  .ba-arrow{display:flex; align-items:center; justify-content:center; font-size:30px; color:var(--ink-faint); font-weight:300;}
+  .chart-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 18px 8px; box-shadow:var(--shadow);
+  }
+  .chart-card h3{font-size:13.5px; margin:0 0 2px; font-weight:600;}
+  .chart-card .cap{font-size:11.5px; color:var(--ink-faint); margin-bottom:10px;}
+  .chart-card .svg-chart{overflow:visible;}
+  .svg-chart svg{width:100%; height:auto; display:block;}
+  .chart-hover-target{transition:opacity .1s ease; cursor:default;}
+  rect.chart-hover-target:hover{opacity:0.82;}
+
+  .chart-tooltip{
+    position:fixed; z-index:9999; pointer-events:none;
+    background:#0C2338; color:#EAF1F6; font-family:'Inter',sans-serif; font-size:12px;
+    padding:8px 12px; border-radius:8px; box-shadow:0 8px 22px rgba(10,25,40,0.4);
+    opacity:0; transform:translate(-50%,-100%) translateY(-12px);
+    transition:opacity .08s ease; white-space:nowrap; line-height:1.5; max-width:280px;
+  }
+  .chart-tooltip.visible{opacity:1;}
+  .chart-tooltip .tt-label{color:#9FB4C0; font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px; white-space:normal;}
+  .chart-tooltip .tt-value{font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:14px; color:#fff;}
+  .legend-row{display:flex; gap:16px; font-size:11.5px; color:var(--ink-soft); margin-top:8px;}
+  .legend-dot{width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:5px;}
+
+  table.data-table{width:100%; border-collapse:collapse; font-size:13px; margin-top:4px;}
+  table.data-table th{
+    text-align:left; padding:8px 10px; background:#F7F9FA; color:var(--ink-soft);
+    font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; font-weight:600;
+    border-bottom:1px solid var(--line-strong);
+  }
+  table.data-table td{padding:9px 10px; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono',monospace; font-size:12.5px;}
+  table.data-table td:first-child{font-family:'Inter',sans-serif; font-size:13px; color:var(--ink);}
+  table.data-table tr:last-child td{border-bottom:none;}
+  .two-col-tables{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:900px){.two-col-tables{grid-template-columns:1fr;}}
+  .assumptions-grid{display:grid; grid-template-columns:0.85fr 0.85fr 1.3fr; gap:14px; align-items:start;}
+  @media (max-width:900px){.assumptions-grid{grid-template-columns:1fr;}}
+  .table-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow);}
+  .table-card h3{font-size:13.5px; margin:0 0 8px; font-weight:600;}
+
+  .util-warning{
+    margin-top:10px; padding:9px 12px; background:#FCEFEC; border:1px solid #F1C9C2; border-radius:8px;
+    font-size:12px; color:#8A2E26; line-height:1.5;
+  }
+  .util-ok{
+    margin-top:10px; padding:9px 12px; background:#EAF5EE; border:1px solid #C7E4D0; border-radius:8px;
+    font-size:12px; color:#245A38; line-height:1.5;
+  }
+
+  footer{padding:20px 30px 40px; color:var(--ink-faint); font-size:11.5px;}
+
+  /* ---------- Methodology appendix ---------- */
+  .methodology{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:16px 18px;
+  }
+  .methodology summary{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; cursor:pointer;
+    list-style:none; display:flex; align-items:center; gap:8px; color:var(--ink);
+  }
+  .methodology summary::-webkit-details-marker{display:none;}
+  .methodology summary::marker{display:none; content:'';}
+  .methodology .chevron{transition:transform .15s ease; color:var(--pcai); font-size:13px;}
+  .methodology[open] .chevron{transform:rotate(90deg);}
+  .methodology-body{margin-top:14px; padding-top:14px; border-top:1px solid var(--line);}
+  .methodology-body h4{font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--pcai); margin:16px 0 6px;}
+  .methodology-body h4:first-child{margin-top:0;}
+  .methodology-body p{font-size:13px; line-height:1.65; color:var(--ink-soft); margin:0 0 4px;}
+  .methodology-body .mono{background:#F3F5F7; padding:1px 6px; border-radius:4px; font-size:12px;}
+  .methodology-disclaimer{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line); font-style:italic; font-size:12px;}
+
+  /* ---------- Print ---------- */
+  @media print{
+    body{background:#fff;}
+    .chart-tooltip{display:none !important;}
+    .app{display:block;}
+    .sidebar{display:none !important;}
+    .topbar{display:none !important;}
+    .print-only{display:block !important;}
+    main{padding:12px 6px;}
+    .section{margin-bottom:18px; page-break-inside:avoid;}
+    .chart-grid{grid-template-columns:1fr 1fr !important;}
+    .stat-grid{grid-template-columns:repeat(4,1fr) !important;}
+    .chart-card, .stat-card, .table-card, .findings, .roi-hero, .methodology{
+      box-shadow:none !important; border:1px solid #D8DDE2 !important;
+    }
+    .svg-chart{max-height:none !important;}
+    .svg-chart svg{width:100% !important; height:auto !important;}
+    .chart-card{overflow:visible !important;}
+    .roi-hero{background:#0F2A3E !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    .methodology{page-break-inside:avoid;}
+    .methodology-body{page-break-inside:avoid;}
+    .methodology .chevron{display:none !important;}
+    .methodology summary{cursor:default;}
+    footer{padding:8px 6px 20px;}
+  }
+  .print-header-row{display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #123353; padding-bottom:10px; margin-bottom:14px;}
+  .print-title{font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:700; color:#0C2338;}
+  .print-subtitle{font-size:12px; color:#57646F; margin-top:3px;}
+  .print-date{font-size:11.5px; color:#8A97A2; font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+
+<div class="print-only" id="printHeader">
+  <div class="print-header-row">
+    <div>
+      <div class="print-title" id="printTitle">AI Usage &amp; HPE AI Hybrid Tokenomics Business Case</div>
+      <div class="print-subtitle" id="printSubtitle">Prepared by — · —</div>
+    </div>
+    <div class="print-date" id="printDate"></div>
+  </div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-row">
+    <div class="brand-block">
+      <p class="eyebrow">PreSales Business Case Builder</p>
+      <h1>AI Usage &amp; HPE AI Hybrid Tokenomics</h1>
+      <p>Model current cloud AI-credit spend against a private HPE AI Hybrid deployment — capacity, cost per token, and a 3-year TCO / ROI comparison that updates as you adjust assumptions.</p>
+    </div>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+      <div class="deal-field">
+        <label>Customer / Deal Name</label>
+        <input type="text" id="customerName" placeholder="e.g. Acme Financial Services" value="">
+      </div>
+      <div class="deal-field">
+        <label>Prepared By</label>
+        <input type="text" id="preparedBy" placeholder="Your name, team" value="HPE AI Specialist">
+      </div>
+      <button id="printBtn" class="print-btn" title="Open a clean, print-ready summary of the current numbers">🖨 Print / Export Summary</button>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <div class="hero-cell emph">
+      <div class="hl">3-Year Net Savings (HPE AI Hybrid vs Cloud)</div>
+      <div class="hv pos" id="hero-netsavings">$0</div>
+      <div class="hs" id="hero-netsavings-sub">Cumulative, at modeled monthly growth</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hl">3-Yr Cloud TCO</div>
+      <div class="hv" id="hero-cloudtco">$0</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hl">3-Yr HPE AI Hybrid TCO</div>
+      <div class="hv" id="hero-pcaitco">$0</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hl">3-Yr ROI</div>
+      <div class="hv" id="hero-roi">0%</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hl">Payback Period</div>
+      <div class="hv" id="hero-payback">0 <small>mo</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR: INPUTS ============ -->
+  <div class="sidebar">
+
+    <h2>AI Usage &amp; Growth</h2>
+    <div class="panel">
+      <div id="usageSourcesBody"></div>
+      <button class="add-row-btn" id="addUsageSourceBtn" style="width:100%; text-align:center; margin-top:2px;">+ Add usage source</button>
+      <div class="mix-total" id="usageSourcesTotal" style="margin-top:9px; text-align:right;">Total: — tok/mo</div>
+    </div>
+    <div class="panel">
+      <details class="advanced-details">
+        <summary>Advanced token usage settings <span class="chevron">▸</span></summary>
+        <div class="advanced-body">
+          <div class="field">
+            <label>Uncounted tokens <span class="unit big" id="lbl_uncounted">5%</span></label>
+            <input type="range" id="in_uncounted" min="0" max="0.5" step="0.01" value="0.05">
+            <div class="note">Code completion / intermediate agentic tokens not captured by AIC counting. Increases actual on-prem token load only.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <h2>On-Prem Configuration</h2>
+    <div class="panel">
+      <div class="field">
+        <label>GPU type</label>
+        <select id="in_gpuType">
+          <option value="H200" selected>NVIDIA H200 (141GB, NVL4)</option>
+          <option value="RTXPRO6000">NVIDIA RTX PRO 6000 Server Edition (96GB)</option>
+          <option value="B300">NVIDIA B300 (Blackwell Ultra, Air Cooled)</option>
+        </select>
+        <div class="note" id="gpuTypeNote">Model mix tok/s below is estimated on an H200 baseline; other GPU types apply a relative throughput multiplier.</div>
+      </div>
+      <div class="field">
+        <label>GPU count <span class="unit" id="lbl_gpuCountUnit">GPUs</span></label>
+        <select id="in_gpuCount"></select>
+        <div class="note">In increments of 4.</div>
+      </div>
+      <div class="field">
+        <label>Annualized capex <span class="unit">$/yr</span></label>
+        <div class="in-wrap"><span class="prefix">$</span><input class="has-prefix fmt-num" type="text" inputmode="numeric" id="in_capex" value="1,000,000"></div>
+        <div class="note">Enter capex for the selected GPU type and count — this isn't auto-priced per hardware choice.</div>
+      </div>
+      <details class="advanced-details">
+        <summary>Advanced usage settings <span class="chevron">▸</span></summary>
+        <div class="advanced-body">
+          <div class="field">
+            <label>Useful capacity factor <span class="unit big" id="lbl_capfactor">80%</span></label>
+            <input type="range" id="in_capfactor" min="0.1" max="1" step="0.01" value="0.80">
+          </div>
+          <div class="field">
+            <label>Operational Costs <span class="unit">$/yr</span></label>
+            <div class="in-wrap"><span class="prefix">$</span><input class="has-prefix fmt-num" type="text" inputmode="numeric" id="in_ops" value="400,000"></div>
+            <div class="note">Defaults to 40% of annualized capex (a common rule-of-thumb for support, power, and ops on GPU infrastructure) — edit directly to override with your own estimate.</div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <h2>Model Mix &amp; Throughput</h2>
+    <div class="panel">
+      <details class="advanced-details">
+        <summary>Model mix configuration <span class="chevron">▸</span></summary>
+        <div class="advanced-body">
+          <div class="field" style="margin-bottom:12px;">
+            <label>Add from model library <span class="unit">50 open-weight models</span></label>
+            <select id="modelPicker"></select>
+            <button class="add-row-btn" id="addFromLibrary" style="margin-top:7px; width:100%; text-align:center;">+ Add to mix</button>
+          </div>
+          <table class="mix-table" id="mixTable">
+            <thead>
+              <tr><th>Model</th><th style="width:64px;">Tok/s<br>per GPU</th><th style="width:52px;">Mix %</th><th style="width:18px;"></th></tr>
+            </thead>
+            <tbody id="mixBody"></tbody>
+          </table>
+          <div class="mix-note">Tok/s per GPU is estimated for H200 from model size — edit any value to override with your own benchmark.</div>
+          <div class="mix-foot">
+            <button class="add-row-btn" id="addMixRow">+ Add custom row</button>
+            <span class="mix-total" id="mixTotal">Mix total: 100%</span>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <h2>Scenarios</h2>
+    <div class="panel">
+      <div class="field">
+        <label>Scenario name</label>
+        <input type="text" id="scenarioName" placeholder="e.g. Conservative growth">
+      </div>
+      <button class="add-row-btn" id="saveScenarioBtn" style="width:100%; text-align:center;">💾 Save current as scenario</button>
+      <button class="reset-btn" id="resetDefaultsBtn" style="width:100%; text-align:center; margin-top:8px;">↺ Reset to default</button>
+      <div id="scenarioList"></div>
+      <div class="note" id="scenarioStorageNote" style="margin-top:10px;"></div>
+    </div>
+
+  </div>
+
+  <!-- ============ MAIN: RESULTS ============ -->
+  <main>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Executive Summary — Current State</h2>
+        <span class="sub">Reflects month-1 usage before growth is applied</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card accent-cloud">
+          <div class="lbl">Current Monthly Tokens</div>
+          <div class="val" id="s_tokens">—</div>
+          <div class="sub" id="s_tokens_sub">—</div>
+        </div>
+        <div class="stat-card accent-cloud">
+          <div class="lbl">Current Monthly Spend</div>
+          <div class="val" id="s_spend">—</div>
+          <div class="sub" id="s_spend_sub">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="lbl">Blended tok/s per GPU</div>
+          <div class="val" id="s_blended">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="lbl">Aggregate Cluster tok/s</div>
+          <div class="val" id="s_aggregate">—</div>
+        </div>
+        <div class="stat-card accent-pcai">
+          <div class="lbl">Effective Annual Capacity</div>
+          <div class="val" id="s_capacity">—</div>
+        </div>
+        <div class="stat-card accent-pcai">
+          <div class="lbl">Capacity Used Today</div>
+          <div class="val" id="s_util">—</div>
+        </div>
+        <div class="stat-card accent-pcai">
+          <div class="lbl">Annual HPE AI Hybrid TCO</div>
+          <div class="val" id="s_pcaitco">—</div>
+        </div>
+        <div class="stat-card accent-savings">
+          <div class="lbl">Estimated Annual Savings</div>
+          <div class="val" id="s_savings">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2>Key Findings</h2></div>
+      <div class="findings"><ul id="findingsList"></ul></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Before &amp; After — Cloud Spend Reduction</h2>
+        <span class="sub">Current cloud-only spend vs. the hybrid spend once usage is offloaded on-prem</span>
+      </div>
+      <div class="before-after-grid">
+        <div class="ba-card ba-before">
+          <div class="ba-label">Before — Cloud Only</div>
+          <div class="ba-row"><span>Annual Cloud Spend</span><span class="ba-val" id="ba_before_cloud">$0</span></div>
+          <div class="ba-total"><span>Total Yearly Spend</span><span id="ba_before_total">$0</span></div>
+        </div>
+        <div class="ba-arrow">→</div>
+        <div class="ba-card ba-after">
+          <div class="ba-label">After — Cloud + On-Prem</div>
+          <div class="ba-row"><span>Adjusted Cloud Spend</span><span class="ba-val" id="ba_after_cloud">$0</span></div>
+          <div class="ba-row"><span>Annualized Capex</span><span class="ba-val" id="ba_after_capex">$0</span></div>
+          <div class="ba-row"><span>Operational Costs</span><span class="ba-val" id="ba_after_ops">$0</span></div>
+          <div class="ba-total"><span>Total Yearly Spend</span><span id="ba_after_total">$0</span></div>
+        </div>
+      </div>
+      <div class="roi-hero" style="margin-top:14px;">
+        <div class="roi-grid cols-4">
+          <div class="roi-item"><div class="lbl">Annual Cost Savings (Before − After)</div><div class="val gold" id="ba_savings">—</div></div>
+          <div class="roi-item"><div class="lbl">Cloud Spend Reduction</div><div class="val" id="ba_cloud_reduction">—</div></div>
+          <div class="roi-item"><div class="lbl">ROI from Reduced Cloud Spend</div><div class="val gold" id="ba_roi">—</div></div>
+          <div class="roi-item"><div class="lbl">3-Yr TCO (After)</div><div class="val" id="ba_tco_after">—</div></div>
+        </div>
+        <div class="hs" id="ba_note" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>3-Year TCO &amp; ROI — Cloud (AIC) vs. HPE AI Hybrid Tokenomics</h2>
+        <span class="sub">36-month forecast compounding monthly growth on both models</span>
+      </div>
+      <div class="roi-hero">
+        <div class="roi-grid">
+          <div class="roi-item"><div class="lbl">3-Yr Cloud TCO</div><div class="val" id="r_cloud">—</div></div>
+          <div class="roi-item"><div class="lbl">3-Yr HPE AI Hybrid TCO</div><div class="val" id="r_pcai">—</div></div>
+          <div class="roi-item"><div class="lbl">3-Yr Net Savings</div><div class="val gold" id="r_net">—</div></div>
+          <div class="roi-item"><div class="lbl">3-Yr ROI</div><div class="val gold" id="r_roi">—</div></div>
+          <div class="roi-item"><div class="lbl">Payback Period</div><div class="val" id="r_payback">—</div></div>
+        </div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Cumulative Cost — Cloud vs. HPE AI Hybrid (36 months)</h3>
+          <div class="cap">Shaded area = cumulative savings from deploying HPE AI Hybrid instead of scaling cloud AIC spend</div>
+          <div id="tcoChart" class="svg-chart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>HPE AI Hybrid Capacity Utilization</h3>
+          <div class="cap">Demand as % of theoretical capacity vs. the useful capacity threshold (moves with the capacity factor slider)</div>
+          <div id="capChart" class="svg-chart"></div>
+          <div id="capNote"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><h2>Annual Cost Comparison</h2></div>
+      <div class="chart-grid" style="grid-template-columns:1.15fr 1.25fr;">
+        <div class="chart-card">
+          <h3>Year 1 — Cloud-Only vs. HPE AI Hybrid</h3>
+          <div class="cap" id="barChartNote">Cloud spend compounds monthly growth across Year 1; HPE AI Hybrid TCO is fixed infrastructure cost.</div>
+          <div id="barChart" class="svg-chart"></div>
+        </div>
+        <div class="table-card">
+          <h3>Payback Analysis (Growth-Adjusted)</h3>
+          <div class="cap" id="paybackNote">Current annual spend and savings below include compounding monthly growth in Year 1, not a flat ×12.</div>
+          <table class="data-table">
+            <tbody id="paybackTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Scenario Comparison</h2>
+        <span class="sub">Saved scenarios from the sidebar, compared side by side</span>
+      </div>
+      <div id="scenarioEmptyState" class="findings" style="text-align:center; color:var(--ink-faint); padding:22px;">
+        No scenarios saved yet — name and save the current inputs from the Scenarios panel in the sidebar to compare them here.
+      </div>
+      <div id="scenarioCompareWrap" style="display:none;">
+        <div class="chart-grid" style="grid-template-columns:1.3fr 1fr;">
+          <div class="chart-card">
+            <h3>3-Year TCO by Scenario</h3>
+            <div class="cap">Cloud vs. HPE AI Hybrid, cumulative over 36 months</div>
+            <div id="scenarioChart" class="svg-chart"></div>
+          </div>
+          <div class="table-card">
+            <h3>Scenario Summary</h3>
+            <table class="data-table">
+              <thead><tr><th>Scenario</th><th>3-Yr ROI</th><th>Net Savings</th></tr></thead>
+              <tbody id="scenarioTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Assumptions Used</h2>
+        <span class="sub">Inputs behind this business case, captured for reference</span>
+      </div>
+      <div class="assumptions-grid">
+        <div class="table-card">
+          <h3>AI Usage &amp; Growth</h3>
+          <table class="data-table">
+            <tbody id="assumptionsUsageBody"></tbody>
+          </table>
+        </div>
+        <div class="table-card">
+          <h3>On-Prem Configuration</h3>
+          <table class="data-table">
+            <tbody id="assumptionsPcaiBody"></tbody>
+          </table>
+        </div>
+        <div class="table-card">
+          <h3>Model Mix</h3>
+          <table class="data-table">
+            <thead><tr><th>Model</th><th>Tok/s per GPU</th><th>Mix %</th></tr></thead>
+            <tbody id="assumptionsMixBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section no-print-collapse">
+      <details class="methodology" id="methodologyDetails">
+        <summary>Methodology &amp; Assumptions <span class="chevron">▸</span></summary>
+        <div class="methodology-body">
+          <h4>Token demand</h4>
+          <p>Base monthly tokens = AIC used/month × average tokens per AI Credit. <b>Uncounted tokens</b> (code completion, intermediate agentic steps not captured by AIC billing) are added on top of this base <i>only</i> for HPE AI Hybrid's GPU load — cloud/AIC spend is unaffected, since it bills on counted credits.</p>
+
+          <h4>HPE AI Hybrid GPU throughput</h4>
+          <p>Tok/s per GPU for each model in the mix is estimated with a power-law fit calibrated to two reference points (~10,000 tok/s for an 8B dense model, ~2,500 tok/s for a 70B dense model on H200 at FP8): <span class="mono">tok/s ≈ 43,600 × active_params(B)<sup>-0.639</sup> × type multiplier</span>, where the multiplier is 1.0 for dense models, 0.85 for verbose reasoning/distilled models, and 0.6 for Mixture-of-Experts models (applied to active, not total, parameters). These are directional engineering estimates, not benchmarked figures — every tok/s value can be overwritten with your own data. The blended tok/s across your model mix is then scaled by a <b>GPU type multiplier</b>: H200 (141GB HBM3e, NVL4) is the 1.00× baseline; RTX PRO 6000 Server Edition (96GB GDDR7, ~1.6TB/s bandwidth vs. H200's ~4.8TB/s, no NVLink) is modeled at 0.40× to reflect its substantially lower memory bandwidth for inference.</p>
+          <p><b>These are aggregate, continuously-batched throughput estimates — not single-user chat speed.</b> Tok/s per GPU here represents total output across many concurrent requests being served together, which is the right lens for sizing organizational capacity. It is not comparable to the "tokens/sec" figure you'd see in a single-chat benchmark or a model provider's latency page, where one user's stream is measured in isolation — that number is typically far lower per request, since aggregate throughput is spread across many simultaneous users, not delivered to any one of them.</p>
+          <p><b>Real throughput will vary from these estimates</b> — often significantly — based on factors this model does not capture at the per-request level: <b>context length</b> (longer prompts consume more time in the compute-bound prefill phase before generation even starts, and MLPerf-style benchmarks that widen input/output length can shift throughput by 2× or more); <b>KV cache pressure</b> (longer conversations and larger context windows consume more GPU memory for cached attention state, which shrinks the batch size the GPU can hold and directly reduces aggregate throughput — this is a big part of why H200's larger HBM over H100 helps so much); <b>batch size and request concurrency</b> (throughput scales up with more simultaneous requests until memory or latency SLAs become the constraint, and production traffic rarely arrives at a steady, ideal batch size); <b>quantization</b> (FP8, FP4, INT8, etc. trade some accuracy for meaningfully higher throughput, and the mix % / tok-s figures here assume you've picked a precision already); and <b>serving stack &amp; tuning</b> (vLLM, TensorRT-LLM, SGLang and similar frameworks, plus how well batching, scheduling, and parallelism are tuned for your specific hardware, can easily produce a 2–3× spread on identical GPUs). Treat every tok/s figure as a planning-grade estimate to validate with a proof-of-concept on your actual model mix and traffic pattern, not a guarantee.</p>
+
+          <h4>Capacity</h4>
+          <p>Theoretical annual capacity = GPU count × blended tok/s × seconds/year. Effective annual capacity applies the <b>useful capacity factor</b> to account for batching inefficiency, request overhead, and headroom. Utilization in the 3-year forecast is demand (including uncounted tokens, compounded by monthly growth) as a percentage of <i>theoretical</i> capacity, compared against a threshold line set at the capacity factor — so raising the capacity factor slider raises how much of theoretical capacity is considered "useful" before more GPUs are needed.</p>
+
+          <h4>Cost &amp; TCO</h4>
+          <p>Annual HPE AI Hybrid TCO = annualized capex + annual support/power/ops, entered directly rather than derived from GPU list pricing (so it reflects your actual quote). Cloud cost compounds the monthly growth rate across 36 months; HPE AI Hybrid TCO is treated as fixed infrastructure cost per year regardless of growth, unless demand exceeds capacity (flagged separately in Key Findings). 3-year TCO for each side is the sum of its 36 monthly costs.</p>
+          <p><b>The support/power/ops figure should include staffing, not just facilities.</b> Real-world HPE AI Hybrid deployments commonly run 0.5–1.5 FTE of infrastructure/MLOps engineering time to keep a GPU cluster healthy — driver and firmware updates, model serving optimization, monitoring, and capacity planning. It's easy to price out power, cooling, and support contracts and forget the people; if that cost isn't already reflected in your annual ops number, add it before treating the TCO comparison as final.</p>
+
+          <h4>ROI &amp; payback</h4>
+          <p>3-Year ROI % = (3-yr cloud TCO − 3-yr HPE AI Hybrid TCO) / 3-yr HPE AI Hybrid TCO. Payback period uses Year-1 cloud spend compounded with monthly growth (not a flat ×12), divided into monthly savings, to show how many months of savings it takes to offset the annual HPE AI Hybrid TCO.</p>
+
+          <p class="methodology-disclaimer">All figures are directional planning estimates for early-stage business case conversations, not a quote. Validate GPU pricing, capex amortization, support costs, and throughput benchmarks with HPE Financial Services and the NVIDIA/AMD performance teams before presenting externally.</p>
+        </div>
+      </details>
+    </div>
+
+    <footer>Model derived from the HPE AI Hybrid Business Case worksheet. Figures are directional planning estimates, not a quote — validate GPU pricing, capex amortization, and support costs with HPE Financial Services before presenting externally.</footer>
+
+  </main>
+</div>
+
+<script>
+/* ---------------------------------------------------------
+   MODEL LIBRARY — 50 open-weight models
+   active = active parameters in billions (= total params for dense models)
+   type: dense | reasoning (verbose dense reasoning-distill) | moe | moe-reasoning
+--------------------------------------------------------- */
+const MODEL_LIBRARY = [
+  {vendor:"Meta", name:"Llama 3.2 1B", active:1, type:"dense"},
+  {vendor:"Meta", name:"Llama 3.2 3B", active:3, type:"dense"},
+  {vendor:"Meta", name:"Llama 3.1 8B", active:8, type:"dense"},
+  {vendor:"Meta", name:"Llama 3.3 70B", active:70, type:"dense"},
+  {vendor:"Meta", name:"Llama 3.1 70B", active:70, type:"dense"},
+  {vendor:"Meta", name:"Llama 3.1 405B", active:405, type:"dense"},
+  {vendor:"Meta", name:"Llama 4 Scout (109B/17B active)", active:17, type:"moe"},
+  {vendor:"Meta", name:"Llama 4 Maverick (400B/17B active)", active:17, type:"moe"},
+  {vendor:"Mistral AI", name:"Mistral 7B v0.3", active:7, type:"dense"},
+  {vendor:"Mistral AI", name:"Mistral Small 3.1 24B", active:24, type:"dense"},
+  {vendor:"Mistral AI", name:"Mistral Large 2 123B", active:123, type:"dense"},
+  {vendor:"Mistral AI", name:"Mixtral 8x7B (47B/13B active)", active:13, type:"moe"},
+  {vendor:"Mistral AI", name:"Mixtral 8x22B (141B/39B active)", active:39, type:"moe"},
+  {vendor:"Alibaba", name:"Qwen2.5 0.5B", active:0.5, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5 3B", active:3, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5 7B", active:7, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5 14B", active:14, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5 32B", active:32, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5 72B", active:72, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen2.5-Coder 32B", active:32, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen3 32B", active:32, type:"dense"},
+  {vendor:"Alibaba", name:"Qwen3 235B (235B/22B active)", active:22, type:"moe"},
+  {vendor:"DeepSeek", name:"DeepSeek-V2.5 (236B/21B active)", active:21, type:"moe"},
+  {vendor:"DeepSeek", name:"DeepSeek-V3 (671B/37B active)", active:37, type:"moe"},
+  {vendor:"DeepSeek", name:"DeepSeek-R1 (671B/37B active)", active:37, type:"moe-reasoning"},
+  {vendor:"DeepSeek", name:"DeepSeek-R1-Distill-Qwen-32B", active:32, type:"reasoning"},
+  {vendor:"DeepSeek", name:"DeepSeek-R1-Distill-Llama-70B", active:70, type:"reasoning"},
+  {vendor:"DeepSeek", name:"DeepSeek-Coder-V2 (236B/21B active)", active:21, type:"moe"},
+  {vendor:"Google", name:"Gemma 2 2B", active:2, type:"dense"},
+  {vendor:"Google", name:"Gemma 2 9B", active:9, type:"dense"},
+  {vendor:"Google", name:"Gemma 2 27B", active:27, type:"dense"},
+  {vendor:"Google", name:"Gemma 3 27B", active:27, type:"dense"},
+  {vendor:"Microsoft", name:"Phi-3 Mini 3.8B", active:3.8, type:"dense"},
+  {vendor:"Microsoft", name:"Phi-3 Medium 14B", active:14, type:"dense"},
+  {vendor:"Microsoft", name:"Phi-3.5-MoE (42B/6.6B active)", active:6.6, type:"moe"},
+  {vendor:"TII", name:"Falcon 2 11B", active:11, type:"dense"},
+  {vendor:"TII", name:"Falcon 40B", active:40, type:"dense"},
+  {vendor:"TII", name:"Falcon 180B", active:180, type:"dense"},
+  {vendor:"Databricks", name:"MPT-30B", active:30, type:"dense"},
+  {vendor:"Databricks", name:"DBRX (132B/36B active)", active:36, type:"moe"},
+  {vendor:"Cohere", name:"Command R 35B", active:35, type:"dense"},
+  {vendor:"Cohere", name:"Command R+ 104B", active:104, type:"dense"},
+  {vendor:"01.AI", name:"Yi-1.5 34B", active:34, type:"dense"},
+  {vendor:"01.AI", name:"Yi-1.5 9B", active:9, type:"dense"},
+  {vendor:"Zhipu AI", name:"GLM-4 9B", active:9, type:"dense"},
+  {vendor:"Zhipu AI", name:"GLM-4.5 (355B/32B active)", active:32, type:"moe"},
+  {vendor:"BigCode", name:"StarCoder2 15B", active:15, type:"dense"},
+  {vendor:"Meta", name:"CodeLlama 34B", active:34, type:"dense"},
+  {vendor:"AI21 Labs", name:"Jamba 1.5 Large (398B/94B active)", active:94, type:"moe"},
+  {vendor:"OpenAI", name:"gpt-oss-120b (117B/5.1B active)", active:5.1, type:"moe"},
+];
+
+function computeTokS(active, type){
+  // Power-law throughput estimate for H200, calibrated against known reference
+  // benchmarks (~10k tok/s for 8B dense, ~2.5k tok/s for 70B dense at FP8).
+  let base = 43600 * Math.pow(active, -0.639);
+  let mult = 1;
+  if(type === 'moe') mult = 0.6;
+  else if(type === 'reasoning') mult = 0.85;
+  else if(type === 'moe-reasoning') mult = 0.6 * 0.85;
+  const val = Math.max(300, Math.min(20000, base * mult));
+  return Math.round(val / 50) * 50;
+}
+
+function populateModelPicker(){
+  const sel = document.getElementById('modelPicker');
+  const byVendor = {};
+  MODEL_LIBRARY.forEach((m,i)=>{ (byVendor[m.vendor] = byVendor[m.vendor]||[]).push(i); });
+  sel.innerHTML = Object.keys(byVendor).sort().map(vendor=>{
+    const opts = byVendor[vendor].map(i=>{
+      const m = MODEL_LIBRARY[i];
+      return `<option value="${i}">${m.name} — ~${computeTokS(m.active,m.type).toLocaleString()} tok/s</option>`;
+    }).join('');
+    return `<optgroup label="${vendor}">${opts}</optgroup>`;
+  }).join('');
+}
+
+/* ---------------------------------------------------------
+   GPU TYPES — relative inference throughput vs. H200 baseline
+   (the model-mix tok/s figures above are calibrated to H200;
+   this multiplier scales them to the selected hardware)
+--------------------------------------------------------- */
+const GPU_TYPES = {
+  H200:      {label:"NVIDIA H200 (141GB, NVL4)", short:"H200", mem:141, mult:1.00, note:"Baseline used to calibrate the model-mix throughput estimates above. The NVL4 domain lets up to 4 GPUs pool memory and NVLink bandwidth for larger models."},
+  RTXPRO6000:{label:"NVIDIA RTX PRO 6000 Server Edition (96GB)", short:"RTX PRO 6000", mem:96, mult:0.40, note:"96GB GDDR7 at ~1.6TB/s vs. H200's ~4.8TB/s HBM3e — substantially lower memory bandwidth reduces inference throughput. No NVLink, so GPUs serve independently rather than pooling across a domain."},
+  B300:      {label:"NVIDIA B300 (Blackwell Ultra, Air Cooled, 288GB)", short:"B300", mem:288, mult:2.60, note:"Blackwell Ultra architecture with substantially more HBM3e capacity/bandwidth and native NVFP4 throughput than H200 — modeled as a large step up. Less benchmarked in the field than H100/H200, so treat this multiplier as more speculative than the others."},
+};
+
+function gpuCountOptions(){
+  // increments of 4, from 4 up to 256
+  const opts = [];
+  for(let n=4;n<=256;n+=4) opts.push(n);
+  return opts;
+}
+function populateGpuCountSelect(){
+  const sel = document.getElementById('in_gpuCount');
+  sel.innerHTML = gpuCountOptions().map(n=>`<option value="${n}"${n===16?' selected':''}>${n}</option>`).join('');
+}
+
+function renderUsageSources(){
+  const body = document.getElementById('usageSourcesBody');
+  body.innerHTML = usageSources.map((u,i) => `
+    <div class="usage-source-card">
+      <div class="usage-source-header">
+        <input type="text" class="usage-name-input" data-i="${i}" data-f="name" value="${escapeHtml(u.name)}" placeholder="Usage name">
+        <button class="usage-rm-btn" data-i="${i}" title="Remove usage source">×</button>
+      </div>
+      <div class="field">
+        <label>Usage input mode</label>
+        <select class="usage-mode-select" data-i="${i}">
+          <option value="aic"${u.mode==='aic'?' selected':''}>AI Credits (AIC)</option>
+          <option value="tokens"${u.mode==='tokens'?' selected':''}>Tokens</option>
+        </select>
+      </div>
+      <div class="field" style="${u.mode==='aic'?'':'display:none;'}">
+        <label>Total AIC / month <span class="unit">credits</span></label>
+        <input type="text" inputmode="numeric" class="fmt-num usage-input" data-i="${i}" data-f="aic" value="${Number(u.aic).toLocaleString('en-US')}">
+      </div>
+      <div class="field" style="${u.mode==='aic'?'':'display:none;'}">
+        <label>Avg tokens per AI Credit <span class="unit">tok/AIC</span></label>
+        <input type="text" inputmode="numeric" class="fmt-num usage-input" data-i="${i}" data-f="tokPerAic" value="${Number(u.tokPerAic).toLocaleString('en-US')}">
+      </div>
+      <div class="field" style="${u.mode==='tokens'?'':'display:none;'}">
+        <label>Tokens / month <span class="unit">tokens</span></label>
+        <input type="text" inputmode="numeric" class="fmt-num usage-input" data-i="${i}" data-f="tokensDirect" value="${Number(u.tokensDirect).toLocaleString('en-US')}">
+      </div>
+      <div class="field">
+        <label>Average monthly spend <span class="unit">$/mo</span></label>
+        <div class="in-wrap"><span class="prefix">$</span><input type="text" inputmode="numeric" class="has-prefix fmt-num usage-input" data-i="${i}" data-f="spend" value="${Number(u.spend||0).toLocaleString('en-US')}"></div>
+      </div>
+      <div class="field">
+        <label>% Offload to On-Prem <span class="unit big usage-offload-lbl" data-i="${i}">${Math.round((u.offload!=null?u.offload:1)*100)}%</span></label>
+        <input type="range" class="usage-offload-input" data-i="${i}" min="0" max="1" step="0.01" value="${u.offload!=null?u.offload:1}">
+        <div class="note">Share of this source's usage moved to HPE AI Hybrid. The rest stays on cloud and keeps being billed there, growing with this source's Monthly growth below.</div>
+      </div>
+      <div class="field">
+        <label>Monthly growth <span class="unit big usage-growth-lbl" data-i="${i}">${Math.round((u.growth!=null?u.growth:0.05)*100)}%</span></label>
+        <input type="range" class="usage-growth-input" data-i="${i}" min="0" max="0.5" step="0.01" value="${u.growth!=null?u.growth:0.05}">
+        <div class="note">Compounding monthly increase in this source's usage and spend across the 3-year forecast.</div>
+      </div>
+      <div class="usage-row-total" data-i="${i}"></div>
+    </div>
+  `).join('');
+
+  body.querySelectorAll('.usage-name-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      usageSources[+e.target.dataset.i].name = e.target.value;
+      compute();
+    });
+  });
+  body.querySelectorAll('.usage-mode-select').forEach(sel=>{
+    sel.addEventListener('input', e=>{
+      usageSources[+e.target.dataset.i].mode = e.target.value;
+      renderUsageSources();
+      compute();
+    });
+  });
+  body.querySelectorAll('.usage-input').forEach(inp=>{
+    inp.addEventListener('focus', ()=>stripCommas(inp));
+    inp.addEventListener('blur', ()=>formatWithCommas(inp));
+    inp.addEventListener('input', e=>{
+      const i = +e.target.dataset.i, f = e.target.dataset.f;
+      usageSources[i][f] = parseFloat(e.target.value.toString().replace(/,/g,'')) || 0;
+      compute();
+    });
+  });
+  body.querySelectorAll('.usage-growth-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const i = +e.target.dataset.i;
+      usageSources[i].growth = parseFloat(e.target.value)||0;
+      const lbl = document.querySelector('.usage-growth-lbl[data-i="'+i+'"]');
+      if(lbl) lbl.textContent = Math.round(usageSources[i].growth*100)+'%';
+      compute();
+    });
+  });
+  body.querySelectorAll('.usage-offload-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const i = +e.target.dataset.i;
+      usageSources[i].offload = parseFloat(e.target.value)||0;
+      const lbl = document.querySelector('.usage-offload-lbl[data-i="'+i+'"]');
+      if(lbl) lbl.textContent = Math.round(usageSources[i].offload*100)+'%';
+      compute();
+    });
+  });
+  body.querySelectorAll('.usage-rm-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      usageSources.splice(+e.target.dataset.i, 1);
+      renderUsageSources();
+      compute();
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   STATE
+--------------------------------------------------------- */
+let usageSources = [
+  {name:"GitHub Copilot", mode:"aic", aic:30000000, tokPerAic:1000, tokensDirect:30000000000, offload:1.0, spend:300000, growth:0.05},
+];
+const DEFAULT_USAGE_SOURCES = JSON.parse(JSON.stringify(usageSources));
+
+// Default mix reflects a typical AI-coding-assistant deployment: a fast small
+// model carries the bulk of low-latency autocomplete/inline-suggestion traffic,
+// a strong mid-size code model handles chat/generation, an MoE code model and a
+// reasoning model cover harder multi-file or debugging tasks, and a lightweight
+// secondary model rounds out the mix.
+let mixRows = [
+  {name:"Llama 3.1 8B", tokS:computeTokS(8,'dense'), mix:30},
+  {name:"Qwen2.5-Coder 32B", tokS:computeTokS(32,'dense'), mix:35},
+  {name:"DeepSeek-Coder-V2 (236B/21B active)", tokS:computeTokS(21,'moe'), mix:15},
+  {name:"StarCoder2 15B", tokS:computeTokS(15,'dense'), mix:10},
+  {name:"DeepSeek-R1-Distill-Qwen-32B", tokS:computeTokS(32,'reasoning'), mix:10},
+];
+const DEFAULT_MIX_ROWS = JSON.parse(JSON.stringify(mixRows));
+
+const DEFAULTS = {
+  gpuType: 'H200',
+  gpuCount: 16,
+  capFactor: '0.80',
+  uncounted: '0.05',
+  capex: '1,000,000',
+  ops: '400,000',
+};
+
+const ids = [];
+const rangeIds = ['in_uncounted','in_capfactor'];
+
+let lastResults = null;
+let scenarios = []; // {id, name, timestamp, inputs, mixRows, results}
+const hasCloudStorage = (typeof window.storage !== 'undefined');
+// Operational Costs defaults to 40% of capex until the user directly edits it —
+// once they do, it stops auto-following capex changes.
+let opsManuallySet = false;
+
+/* ---------------------------------------------------------
+   FORMATTERS
+--------------------------------------------------------- */
+const fmtMoney0 = n => '$' + Math.round(n).toLocaleString('en-US');
+const fmtMoneyCompact = n => {
+  const sign = n<0 ? '-' : '';
+  n = Math.abs(n);
+  if(n>=1e9) return sign+'$'+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return sign+'$'+(n/1e6).toFixed(2)+'M';
+  if(n>=1e3) return sign+'$'+(n/1e3).toFixed(0)+'K';
+  return sign+'$'+n.toFixed(0);
+};
+const fmtTok = n => {
+  if(n>=1e12) return (n/1e12).toFixed(2)+'T';
+  if(n>=1e9) return (n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return (n/1e6).toFixed(2)+'M';
+  if(n>=1e3) return (n/1e3).toFixed(1)+'K';
+  return n.toFixed(0);
+};
+const fmtPct = (n,d=1) => (n*100).toFixed(d)+'%';
+const fmtInt = n => Math.round(n).toLocaleString('en-US');
+
+/* ---------------------------------------------------------
+   MIX TABLE RENDER
+--------------------------------------------------------- */
+function renderMixTable(){
+  const body = document.getElementById('mixBody');
+  body.innerHTML = '';
+  mixRows.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" data-i="${i}" data-f="name" value="${row.name}"></td>
+      <td><input type="text" inputmode="numeric" class="fmt-num" data-i="${i}" data-f="tokS" value="${Number(row.tokS).toLocaleString('en-US')}"></td>
+      <td><input type="number" data-i="${i}" data-f="mix" value="${row.mix}" step="1"></td>
+      <td><button class="rm-btn" data-i="${i}" title="Remove">×</button></td>
+    `;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const i = +e.target.dataset.i, f = e.target.dataset.f;
+      mixRows[i][f] = (f==='name') ? e.target.value : parseFloat(e.target.value.toString().replace(/,/g,''))||0;
+      updateMixTotal();
+      compute();
+    });
+    if(inp.classList.contains('fmt-num')){
+      inp.addEventListener('focus', ()=>stripCommas(inp));
+      inp.addEventListener('blur', ()=>formatWithCommas(inp));
+    }
+  });
+  body.querySelectorAll('.rm-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const i = +e.target.dataset.i;
+      mixRows.splice(i,1);
+      renderMixTable();
+      updateMixTotal();
+      compute();
+    });
+  });
+  updateMixTotal();
+}
+function updateMixTotal(){
+  const total = mixRows.reduce((s,r)=>s+r.mix,0);
+  const el = document.getElementById('mixTotal');
+  el.textContent = 'Mix total: ' + total.toFixed(0) + '%';
+  el.className = 'mix-total' + (Math.abs(total-100)>0.5 ? ' bad' : '');
+}
+document.getElementById('addMixRow').addEventListener('click', ()=>{
+  mixRows.push({name:'New model', tokS:3000, mix:0});
+  renderMixTable();
+  compute();
+});
+document.getElementById('addFromLibrary').addEventListener('click', ()=>{
+  const sel = document.getElementById('modelPicker');
+  const m = MODEL_LIBRARY[+sel.value];
+  if(!m) return;
+  mixRows.push({name:m.name, tokS:computeTokS(m.active, m.type), mix:0});
+  renderMixTable();
+  compute();
+});
+
+/* ---------------------------------------------------------
+   CHARTS — hand-built inline SVG, no external library.
+   Canvas + a 3rd-party charting library needs an async JS "draw pass"
+   after layout settles (and Chart.js additionally animates that draw
+   over ~1s by default). That's fragile: on first paint it can race
+   layout/font loading, and for print/export it can be captured before
+   the draw (or animation) has completed, producing blank or cropped
+   charts. Inline SVG is just DOM markup — it paints synchronously as
+   part of normal HTML rendering and prints exactly as shown on screen,
+   every time, with no separate render step to get the timing of.
+--------------------------------------------------------- */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ---------------------------------------------------------
+   CHART TOOLTIPS — a lightweight styled hover tooltip driven by
+   plain mouse events on the SVG elements above (each carries a
+   data-tooltip="label||value" attribute). This is layered entirely
+   on top of static SVG: the chart itself needs no JS to render
+   correctly, so this only ever adds interactivity on screen and has
+   zero effect on, or risk to, print/export output (it starts hidden
+   and is force-hidden in print CSS regardless).
+--------------------------------------------------------- */
+let chartTooltipEl = null;
+function getChartTooltipEl(){
+  if(!chartTooltipEl){
+    chartTooltipEl = document.createElement('div');
+    chartTooltipEl.className = 'chart-tooltip';
+    document.body.appendChild(chartTooltipEl);
+  }
+  return chartTooltipEl;
+}
+function positionChartTooltip(e){
+  const el = getChartTooltipEl();
+  const pad = 14;
+  let x = e.clientX, y = e.clientY - pad;
+  el.style.left = x + 'px';
+  el.style.top = Math.max(y, 8) + 'px';
+}
+function showChartTooltip(e, raw){
+  const parts = String(raw).split('||');
+  const el = getChartTooltipEl();
+  el.innerHTML = `<div class="tt-label">${parts[0]||''}</div><div class="tt-value">${parts[1]||''}</div>`;
+  el.classList.add('visible');
+  positionChartTooltip(e);
+}
+function hideChartTooltip(){
+  if(chartTooltipEl) chartTooltipEl.classList.remove('visible');
+}
+document.addEventListener('pointerover', e=>{
+  const t = e.target.closest && e.target.closest('[data-tooltip]');
+  if(t) showChartTooltip(e, t.getAttribute('data-tooltip'));
+});
+document.addEventListener('pointermove', e=>{
+  const t = e.target.closest && e.target.closest('[data-tooltip]');
+  if(t) positionChartTooltip(e);
+});
+document.addEventListener('pointerout', e=>{
+  const t = e.target.closest && e.target.closest('[data-tooltip]');
+  if(t) hideChartTooltip();
+});
+
+function niceMax(rawMax){
+  if(rawMax <= 0) return 1;
+  const mag = Math.pow(10, Math.floor(Math.log10(rawMax)));
+  const norm = rawMax / mag;
+  let niceNorm;
+  if(norm <= 1) niceNorm = 1;
+  else if(norm <= 2) niceNorm = 2;
+  else if(norm <= 2.5) niceNorm = 2.5;
+  else if(norm <= 5) niceNorm = 5;
+  else niceNorm = 10;
+  return niceNorm * mag;
+}
+
+// Line/area chart — used for the 36-month cumulative cost and capacity-utilization charts.
+function buildLineAreaSVG({width=700, height=340, xLabels, series, yFormat, xTickEvery=6, thresholdY}){
+  const left=68, right=16, top=18, bottom=38;
+  const pw = width-left-right, ph = height-top-bottom;
+  const n = xLabels.length;
+  const allVals = series.flatMap(s=>s.data).concat(thresholdY!=null?[thresholdY]:[]);
+  const yMax = niceMax(Math.max(...allVals, 0.0001));
+  const xAt = i => left + (n<=1 ? 0 : (pw*i/(n-1)));
+  const yAt = v => top + ph - (ph*v/yMax);
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="${SVG_NS}" role="img" style="width:100%;height:auto;display:block;">`;
+  const ticks = 4;
+  for(let t=0;t<=ticks;t++){
+    const v = yMax*t/ticks, y = yAt(v);
+    svg += `<line x1="${left}" y1="${y.toFixed(1)}" x2="${width-right}" y2="${y.toFixed(1)}" stroke="#EEF1F3" stroke-width="1"/>`;
+    svg += `<text x="${left-10}" y="${(y+5).toFixed(1)}" text-anchor="end" font-size="14" fill="#6C7A85" font-family="Inter,sans-serif">${yFormat(v)}</text>`;
+  }
+  if(thresholdY != null){
+    const y = yAt(thresholdY);
+    svg += `<line x1="${left}" y1="${y.toFixed(1)}" x2="${width-right}" y2="${y.toFixed(1)}" stroke="#C1443B" stroke-width="2" stroke-dasharray="6,5"/>`;
+  }
+  xLabels.forEach((lab,i)=>{
+    if(i % xTickEvery !== 0 && i !== n-1) return;
+    svg += `<text x="${xAt(i).toFixed(1)}" y="${height-10}" text-anchor="middle" font-size="14" fill="#6C7A85" font-family="Inter,sans-serif">${escapeHtml(lab)}</text>`;
+  });
+  series.forEach(s=>{
+    if(!s.fill) return;
+    let d = `M ${xAt(0).toFixed(1)} ${yAt(s.data[0]).toFixed(1)} `;
+    for(let i=1;i<n;i++) d += `L ${xAt(i).toFixed(1)} ${yAt(s.data[i]).toFixed(1)} `;
+    d += `L ${xAt(n-1).toFixed(1)} ${yAt(0).toFixed(1)} L ${xAt(0).toFixed(1)} ${yAt(0).toFixed(1)} Z`;
+    svg += `<path d="${d}" fill="${s.color}" opacity="0.14" stroke="none"/>`;
+  });
+  series.forEach(s=>{
+    let d = `M ${xAt(0).toFixed(1)} ${yAt(s.data[0]).toFixed(1)} `;
+    for(let i=1;i<n;i++) d += `L ${xAt(i).toFixed(1)} ${yAt(s.data[i]).toFixed(1)} `;
+    svg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  });
+  series.forEach(s=>{
+    s.data.forEach((v,i)=>{
+      if(i % 2 !== 0 && i !== n-1) return; // thin out hover targets for performance
+      svg += `<circle cx="${xAt(i).toFixed(1)}" cy="${yAt(v).toFixed(1)}" r="9" fill="transparent" class="chart-hover-target" data-tooltip="${escapeHtml(s.name)}, ${escapeHtml(xLabels[i])}||${escapeHtml(yFormat(v))}"></circle>`;
+    });
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+// Simple bar chart — used for the Year-1 cost comparison (with an optional note label above one bar).
+function buildBarSVG({width=700, height=340, labels, values, colors, yFormat, noteLabel, noteColor='#8A5A16', noteIndex=0}){
+  const left=68, right=16, top=noteLabel?46:20, bottom=64;
+  const pw = width-left-right, ph = height-top-bottom;
+  const n = values.length;
+  const yMax = niceMax(Math.max(...values, 0.0001));
+  const yAt = v => top+ph-(ph*v/yMax);
+  const bw = Math.min(110, (pw/n)*0.45);
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="${SVG_NS}" role="img" style="width:100%;height:auto;display:block;">`;
+  const ticks = 4;
+  for(let t=0;t<=ticks;t++){
+    const v = yMax*t/ticks, y = yAt(v);
+    svg += `<line x1="${left}" y1="${y.toFixed(1)}" x2="${width-right}" y2="${y.toFixed(1)}" stroke="#EEF1F3" stroke-width="1"/>`;
+    svg += `<text x="${left-10}" y="${(y+5).toFixed(1)}" text-anchor="end" font-size="14" fill="#6C7A85" font-family="Inter,sans-serif">${yFormat(v)}</text>`;
+  }
+  values.forEach((v,i)=>{
+    const cx = left + pw*(i+0.5)/n;
+    const x = cx - bw/2;
+    const y = yAt(v);
+    const h = Math.max((top+ph)-y, 0);
+    svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="7" fill="${colors[i]}" class="chart-hover-target" data-tooltip="${escapeHtml(labels[i]).replace(/\n/g,' ')}||${escapeHtml(yFormat(v))}"></rect>`;
+    if(i===noteIndex && noteLabel){
+      svg += `<text x="${cx.toFixed(1)}" y="${(y-14).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="600" fill="${noteColor}" font-family="Inter,sans-serif">${escapeHtml(noteLabel)}</text>`;
+    }
+    String(labels[i]).split('\n').forEach((ln,li)=>{
+      svg += `<text x="${cx.toFixed(1)}" y="${height-bottom+22+li*16}" text-anchor="middle" font-size="14" fill="#57646F" font-family="Inter,sans-serif">${escapeHtml(ln)}</text>`;
+    });
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+// Grouped bar chart — used for the multi-scenario comparison.
+function buildGroupedBarSVG({width=700, height=340, labels, datasets, yFormat}){
+  const left=68, right=16, top=38, bottom=54;
+  const pw = width-left-right, ph = height-top-bottom;
+  const n = labels.length;
+  const yMax = niceMax(Math.max(...datasets.flatMap(d=>d.values), 0.0001));
+  const yAt = v => top+ph-(ph*v/yMax);
+  const groupW = pw/n;
+  const barW = Math.min(38, groupW/(datasets.length+1.2));
+
+  let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="${SVG_NS}" role="img" style="width:100%;height:auto;display:block;">`;
+  datasets.forEach((d,di)=>{
+    const lx = left + di*160;
+    svg += `<rect x="${lx}" y="2" width="12" height="12" rx="2" fill="${d.color}"/><text x="${lx+17}" y="12" font-size="14" fill="#57646F" font-family="Inter,sans-serif">${escapeHtml(d.name)}</text>`;
+  });
+  const ticks = 4;
+  for(let t=0;t<=ticks;t++){
+    const v = yMax*t/ticks, y = yAt(v);
+    svg += `<line x1="${left}" y1="${y.toFixed(1)}" x2="${width-right}" y2="${y.toFixed(1)}" stroke="#EEF1F3" stroke-width="1"/>`;
+    svg += `<text x="${left-10}" y="${(y+5).toFixed(1)}" text-anchor="end" font-size="14" fill="#6C7A85" font-family="Inter,sans-serif">${yFormat(v)}</text>`;
+  }
+  labels.forEach((lab,i)=>{
+    const gx = left + groupW*i;
+    datasets.forEach((d,di)=>{
+      const v = d.values[i];
+      const x = gx + groupW/2 - (datasets.length*barW)/2 + di*barW;
+      const y = yAt(v);
+      const h = Math.max((top+ph)-y, 0);
+      svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(barW-3).toFixed(1)}" height="${h.toFixed(1)}" rx="5" fill="${d.color}" class="chart-hover-target" data-tooltip="${escapeHtml(lab)} — ${escapeHtml(d.name)}||${escapeHtml(yFormat(v))}"></rect>`;
+    });
+    const shortLab = lab.length>16 ? lab.slice(0,15)+'…' : lab;
+    svg += `<text x="${(gx+groupW/2).toFixed(1)}" y="${height-bottom+22}" text-anchor="middle" font-size="14" fill="#57646F" font-family="Inter,sans-serif">${escapeHtml(shortLab)}</text>`;
+  });
+  svg += `</svg>`;
+  return svg;
+}
+
+/* ---------------------------------------------------------
+   COMMA-FORMATTED NUMBER FIELDS
+--------------------------------------------------------- */
+function stripCommas(el){
+  el.value = (el.value || '').toString().replace(/,/g,'');
+}
+function formatWithCommas(el){
+  const raw = (el.value || '').toString().replace(/,/g,'').trim();
+  if(raw === '' || isNaN(raw)) return;
+  el.value = Number(raw).toLocaleString('en-US');
+}
+function numVal(id){
+  const el = document.getElementById(id);
+  return parseFloat((el.value || '').toString().replace(/,/g,'')) || 0;
+}
+
+/* ---------------------------------------------------------
+   CORE COMPUTE
+--------------------------------------------------------- */
+function getInputs(){
+  return {
+    h200: +document.getElementById('in_gpuCount').value || 0,
+    gpuType: document.getElementById('in_gpuType').value,
+    capFactor: parseFloat(document.getElementById('in_capfactor').value)||0,
+    uncounted: parseFloat(document.getElementById('in_uncounted').value)||0,
+    capex: numVal('in_capex'),
+    ops: numVal('in_ops'),
+  };
+}
+
+function compute(){
+  const inp = getInputs();
+  document.getElementById('lbl_uncounted').textContent = Math.round(inp.uncounted*100)+'%';
+  document.getElementById('lbl_capfactor').textContent = Math.round(inp.capFactor*100)+'%';
+
+  const gpu = GPU_TYPES[inp.gpuType] || GPU_TYPES.H200;
+  document.getElementById('gpuTypeNote').textContent = gpu.note;
+  document.getElementById('lbl_gpuCountUnit').textContent = gpu.short + 's';
+  const gpuLabel = `${inp.h200} × ${gpu.short}`;
+
+  // Per-source figures — each usage source carries its own tokens, offload %,
+  // monthly spend, and monthly growth rate.
+  const sourceCalcs = usageSources.map(u=>{
+    const tokens = u.mode==='tokens' ? u.tokensDirect : u.aic*u.tokPerAic;
+    const offload = u.offload!=null ? u.offload : 1;
+    const growth = u.growth!=null ? u.growth : 0.05;
+    const spend = u.spend||0;
+    return { tokens, offload, growth, spend, offloadedTokens: tokens*offload, remainingSpend: spend*(1-offload) };
+  });
+
+  const baseMonthlyTokens = sourceCalcs.reduce((s,c)=>s+c.tokens,0);
+  const offloadedMonthlyTokens = sourceCalcs.reduce((s,c)=>s+c.offloadedTokens,0);
+  const overallOffloadPct = baseMonthlyTokens>0 ? offloadedMonthlyTokens/baseMonthlyTokens : 0;
+  const currentMonthlySpend = sourceCalcs.reduce((s,c)=>s+c.spend,0);
+  const remainingMonthlySpend = sourceCalcs.reduce((s,c)=>s+c.remainingSpend,0); // non-offloaded, month-0
+  // Spend-weighted blended growth rate, for narrative text only — every actual
+  // calculation below compounds each source at its own growth rate.
+  const blendedGrowthPct = currentMonthlySpend>0
+    ? sourceCalcs.reduce((s,c)=>s+c.growth*c.spend,0)/currentMonthlySpend
+    : (sourceCalcs.length>0 ? sourceCalcs.reduce((s,c)=>s+c.growth,0)/sourceCalcs.length : 0);
+
+  const usageTotalEl = document.getElementById('usageSourcesTotal');
+  if(usageTotalEl){
+    usageTotalEl.textContent = usageSources.length + (usageSources.length===1?' source':' sources') + ' → Total: ' + fmtTok(baseMonthlyTokens) + ' tok/mo (' + fmtPct(overallOffloadPct,0) + ' blended offload)';
+  }
+  usageSources.forEach((u,i)=>{
+    const rowTokens = u.mode==='tokens' ? u.tokensDirect : u.aic*u.tokPerAic;
+    const rowOffloaded = rowTokens*(u.offload!=null?u.offload:1);
+    const rowEl = document.querySelector('.usage-row-total[data-i="'+i+'"]');
+    if(rowEl) rowEl.textContent = '= ' + fmtTok(rowTokens) + ' tok/mo · ' + fmtTok(rowOffloaded) + ' on-prem · ' + fmtMoneyCompact(u.spend||0) + '/mo';
+  });
+  // Only each source's own offloaded share becomes on-prem GPU load
+  const pcaiMonthlyTokens = offloadedMonthlyTokens * (1+inp.uncounted);
+
+  const mixTotalPct = mixRows.reduce((s,r)=>s+r.mix,0);
+  const mixFrac = mixTotalPct>0 ? (1/mixTotalPct) : 0; // normalize to 100 even if user total isn't exactly 100
+  const blendedTokSBaseH200 = mixRows.reduce((s,r)=>s + r.tokS*(r.mix*mixFrac), 0);
+  const blendedTokS = blendedTokSBaseH200 * gpu.mult; // scaled to selected GPU type
+
+  const clusterTokS = inp.h200 * blendedTokS;
+  const theoreticalAnnualCapacityM = clusterTokS*60*60*24*365/1e6; // million tokens/yr
+  const effectiveAnnualCapacityM = theoreticalAnnualCapacityM * inp.capFactor;
+
+  const currentAnnualDemandM = (pcaiMonthlyTokens*12)/1e6; // uses uncounted-adjusted, offloaded tokens: on-prem GPU load
+  const capacityUtil = effectiveAnnualCapacityM>0 ? currentAnnualDemandM/effectiveAnnualCapacityM : 0;
+
+  const annualPcaiTco = inp.capex + inp.ops;
+  const currentAnnualSpend = currentMonthlySpend*12; // baseline: full cloud spend today, as if never offloaded
+  const remainingAnnualSpend = remainingMonthlySpend*12;
+  const annualHybridCost = remainingAnnualSpend + annualPcaiTco; // remaining cloud + on-prem infra
+  const annualSavings = currentAnnualSpend - annualHybridCost;
+  const savingsPct = currentAnnualSpend>0 ? annualSavings/currentAnnualSpend : 0;
+
+  // Before & After framing: cloud-spend-specific reduction and the ROI that
+  // capex investment buys via that reduction (distinct from the fuller 3-yr ROI below)
+  const cloudSpendReduction = currentAnnualSpend - remainingAnnualSpend;
+  const roiFromReducedCloudSpend = inp.capex>0 ? (cloudSpendReduction/inp.capex)*100 : 0;
+
+  const currentAnnualDemandBaseM = (baseMonthlyTokens*12)/1e6;
+  const currentCostPerMTok = currentAnnualDemandBaseM>0 ? currentAnnualSpend/currentAnnualDemandBaseM : 0;
+  const pcaiCostPerMTokFull = effectiveAnnualCapacityM>0 ? annualPcaiTco/effectiveAnnualCapacityM : 0;
+  const pcaiCostPerMTokCurrent = currentAnnualDemandM>0 ? annualPcaiTco/currentAnnualDemandM : 0;
+  const costReductionPct = currentCostPerMTok>0 ? 1-(pcaiCostPerMTokCurrent/currentCostPerMTok) : 0;
+
+  /* payback figures are computed after the 3-year growth projection below, using
+     Year-1 growth-compounded cloud spend rather than a flat ×12 */
+
+  /* ---- 36 month growth projection — each source compounds at its own rate ---- */
+  const months = [];
+  let cumCloud=0, cumPcai=0, capExceededMonth=null;
+  for(let m=0;m<36;m++){
+    let cloudSpend_m = 0, remainingCloudSpend_m = 0, offloadedTokens_m = 0;
+    sourceCalcs.forEach(c=>{
+      const gf = Math.pow(1+c.growth, m);
+      cloudSpend_m += c.spend*gf; // counterfactual baseline: full spend, never offloaded
+      remainingCloudSpend_m += c.spend*(1-c.offload)*gf; // still-cloud portion after offload
+      offloadedTokens_m += c.offloadedTokens*gf;
+    });
+    const pcaiCost_m = annualPcaiTco/12;
+    const hybridCost_m = remainingCloudSpend_m + pcaiCost_m;
+    cumCloud += cloudSpend_m;
+    cumPcai += hybridCost_m;
+    const pcaiTokenDemand_m = offloadedTokens_m*(1+inp.uncounted);
+    const demandPctTheoretical = theoreticalAnnualCapacityM>0 ? ((pcaiTokenDemand_m*12)/1e6)/theoreticalAnnualCapacityM*100 : 0;
+    const thresholdPct = inp.capFactor*100;
+    if(demandPctTheoretical>thresholdPct && capExceededMonth===null) capExceededMonth = m+1;
+    months.push({m:m+1, cumCloud, cumPcai, demandPct:demandPctTheoretical, thresholdPct});
+  }
+  const tco3Cloud = cumCloud;
+  const tco3Pcai = cumPcai;
+  const netSavings3 = tco3Cloud - tco3Pcai;
+  const roi3Pct = tco3Pcai>0 ? (netSavings3/tco3Pcai)*100 : 0;
+
+  const year1CloudSpend = months[11].cumCloud; // Year-1 baseline cloud spend compounded with monthly growth
+  const year1HybridCost = months[11].cumPcai; // Year-1 remaining-cloud + on-prem infra
+  const annualSavingsGrowth = year1CloudSpend - year1HybridCost;
+  const monthlySavings = annualSavingsGrowth/12;
+  const paybackMonths = monthlySavings>0 ? annualPcaiTco/monthlySavings : Infinity;
+
+  /* ---------- WRITE DOM: hero ---------- */
+  document.getElementById('hero-netsavings').textContent = fmtMoneyCompact(netSavings3);
+  document.getElementById('hero-cloudtco').textContent = fmtMoneyCompact(tco3Cloud);
+  document.getElementById('hero-pcaitco').textContent = fmtMoneyCompact(tco3Pcai);
+  document.getElementById('hero-roi').textContent = roi3Pct.toFixed(0)+'%';
+  document.getElementById('hero-payback').innerHTML = (isFinite(paybackMonths) ? paybackMonths.toFixed(1) : '—') + ' <small>mo</small>';
+
+  /* ---------- WRITE DOM: exec summary cards ---------- */
+  document.getElementById('s_tokens').innerHTML = fmtTok(baseMonthlyTokens) + ' <small>tok/mo</small>';
+  document.getElementById('s_tokens_sub').textContent = usageSources.length + ' usage source' + (usageSources.length===1?'':'s') + ' · ' + fmtTok(pcaiMonthlyTokens) + ' effective on-prem (w/ uncounted, ' + fmtPct(overallOffloadPct,0) + ' blended offload)';
+  document.getElementById('s_spend').textContent = fmtMoneyCompact(currentMonthlySpend)+'/mo';
+  document.getElementById('s_spend_sub').textContent = fmtMoneyCompact(currentAnnualSpend) + '/yr';
+  document.getElementById('s_blended').textContent = fmtInt(blendedTokS) + ' tok/s';
+  document.getElementById('s_aggregate').textContent = fmtInt(clusterTokS) + ' tok/s';
+  document.getElementById('s_capacity').innerHTML = fmtTok(effectiveAnnualCapacityM*1e6) + ' <small>tok/yr</small>';
+  document.getElementById('s_util').textContent = fmtPct(capacityUtil);
+  document.getElementById('s_pcaitco').textContent = fmtMoneyCompact(annualPcaiTco);
+  document.getElementById('s_savings').textContent = fmtMoneyCompact(annualSavings);
+
+  /* ---------- Key Findings ---------- */
+  const findings = document.getElementById('findingsList');
+  const findingsData = [
+    `Combined usage across <b>${usageSources.length}</b> source${usageSources.length===1?'':'s'} implies <b>${fmtTok(baseMonthlyTokens)}</b> tokens/month; at <b>${fmtPct(overallOffloadPct,0)}</b> blended offload to on-prem and accounting for uncounted agentic tokens (+${fmtPct(inp.uncounted,0)}), effective HPE AI Hybrid load is <b>${fmtTok(pcaiMonthlyTokens)}</b> tokens/month.`,
+    `The ${gpuLabel} configuration provides <b>${fmtTok(effectiveAnnualCapacityM*1e6)}</b> effective tokens/year and would operate at <b>${fmtPct(capacityUtil)}</b> of useful capacity today.`,
+    `Annual HPE AI Hybrid TCO is <b>${fmtMoney0(annualPcaiTco)}</b>${overallOffloadPct<1 ? ` plus <b>${fmtMoney0(remainingAnnualSpend)}</b> of cloud spend that stays on the non-offloaded ${fmtPct(1-overallOffloadPct,0)} of usage` : ''}, compared with current annual cloud spend of <b>${fmtMoney0(currentAnnualSpend)}</b> — estimated annual savings of <b>${fmtMoney0(annualSavings)}</b> (${fmtPct(savingsPct)}).`,
+    `Estimated cost reduction per million tokens on the offloaded workload: <b>${fmtPct(costReductionPct)}</b> (${'$'+currentCostPerMTok.toFixed(2)} → ${'$'+pcaiCostPerMTokCurrent.toFixed(2)} per M tokens at current load).`,
+    `At a blended <b>${fmtPct(blendedGrowthPct,0)}</b> monthly growth compounded over 3 years, cloud-only TCO reaches <b>${fmtMoney0(tco3Cloud)}</b> vs. HPE AI Hybrid TCO of <b>${fmtMoney0(tco3Pcai)}</b> — net savings of <b>${fmtMoney0(netSavings3)}</b> (${roi3Pct.toFixed(0)}% ROI).`,
+  ];
+  if(capExceededMonth){
+    const yr = Math.floor((capExceededMonth-1)/12)+1, moInYr = ((capExceededMonth-1)%12)+1;
+    findingsData.push(`<span class="warn-line">⚠ At a ${fmtPct(inp.capFactor,0)} useful capacity factor and a blended ${fmtPct(blendedGrowthPct,0)} monthly growth, projected demand will exceed useful capacity in month ${capExceededMonth} of the forecast (Year ${yr}, month ${moInYr}) — plan a capacity expansion or raise the capacity factor before that point.</span>`);
+  } else {
+    findingsData.push(`At a ${fmtPct(inp.capFactor,0)} useful capacity factor, the current ${gpuLabel} configuration retains sufficient headroom through the full 3-year forecast at each source's modeled growth rate.`);
+  }
+  findings.innerHTML = findingsData.map(f=>`<li><span class="dot">•</span><span>${f}</span></li>`).join('');
+
+  /* ---------- Before & After ---------- */
+  document.getElementById('ba_before_cloud').textContent = fmtMoney0(currentAnnualSpend);
+  document.getElementById('ba_before_total').textContent = fmtMoney0(currentAnnualSpend);
+  document.getElementById('ba_after_cloud').textContent = fmtMoney0(remainingAnnualSpend);
+  document.getElementById('ba_after_capex').textContent = fmtMoney0(inp.capex);
+  document.getElementById('ba_after_ops').textContent = fmtMoney0(inp.ops);
+  document.getElementById('ba_after_total').textContent = fmtMoney0(annualHybridCost);
+  document.getElementById('ba_savings').textContent = fmtMoney0(annualSavings);
+  document.getElementById('ba_cloud_reduction').textContent = fmtMoney0(cloudSpendReduction);
+  document.getElementById('ba_roi').textContent = roiFromReducedCloudSpend.toFixed(0)+'%';
+  document.getElementById('ba_tco_after').textContent = fmtMoney0(tco3Pcai);
+  document.getElementById('ba_note').textContent = `Adjusted cloud spend reflects ${fmtPct(overallOffloadPct,0)} of usage moving on-prem — cloud billing drops in proportion to the tokens no longer served there. ROI from reduced cloud spend = cloud spend reduction ÷ annualized capex, showing the annual return the capex investment buys through lower cloud bills alone (before counting ongoing support/ops cost).`;
+
+  /* ---------- 3-yr ROI hero panel ---------- */
+  document.getElementById('r_cloud').textContent = fmtMoney0(tco3Cloud);
+  document.getElementById('r_pcai').textContent = fmtMoney0(tco3Pcai);
+  document.getElementById('r_net').textContent = fmtMoney0(netSavings3);
+  document.getElementById('r_roi').textContent = roi3Pct.toFixed(0)+'%';
+  document.getElementById('r_payback').innerHTML = (isFinite(paybackMonths) ? paybackMonths.toFixed(1)+' months' : '—');
+
+  /* ---------- charts ---------- */
+  const monthLabels = months.map(x=>String(x.m));
+  document.getElementById('tcoChart').innerHTML = buildLineAreaSVG({
+    xLabels: monthLabels,
+    series: [
+      {name:'Cumulative Cloud-Only Cost', data: months.map(x=>x.cumCloud), color:'#D98C2B', fill:true},
+      {name:'Cumulative HPE AI Hybrid TCO', data: months.map(x=>x.cumPcai), color:'#1E8F84', fill:true},
+    ],
+    yFormat: fmtMoneyCompact,
+  });
+
+  document.getElementById('capChart').innerHTML = buildLineAreaSVG({
+    xLabels: monthLabels,
+    series: [
+      {name:'Demand (% of theoretical capacity)', data: months.map(x=>x.demandPct), color:'#1E8F84', fill:true},
+    ],
+    yFormat: v=>Math.round(v)+'%',
+    thresholdY: inp.capFactor*100,
+  });
+
+  const capNote = document.getElementById('capNote');
+  if(capExceededMonth){
+    capNote.className='util-warning';
+    capNote.textContent = `At a ${fmtPct(inp.capFactor,0)} useful capacity factor, demand crosses the useful capacity threshold in month ${capExceededMonth}. Raise the capacity factor, add GPUs, or plan an expansion ahead of this point.`;
+  } else {
+    capNote.className='util-ok';
+    const endDemand = months[35].demandPct.toFixed(0);
+    capNote.textContent = `Demand stays under the ${fmtPct(inp.capFactor,0)} useful capacity threshold through month 36, ending near ${endDemand}% of theoretical capacity at the modeled growth rate.`;
+  }
+
+  const growthNoteLabel = blendedGrowthPct>0 ? `+${fmtPct(blendedGrowthPct,0)}/mo blended growth` : 'No growth applied';
+  document.getElementById('barChart').innerHTML = buildBarSVG({
+    width: 560, height: 440,
+    labels: ['Cloud-Only\n(w/ growth)', `HPE AI Hybrid\n${gpuLabel}\nTotal`],
+    values: [year1CloudSpend, year1HybridCost],
+    colors: ['#D98C2B','#1E8F84'],
+    yFormat: fmtMoneyCompact,
+    noteLabel: growthNoteLabel,
+  });
+  document.getElementById('barChartNote').textContent = blendedGrowthPct>0
+    ? `Cloud-only bar compounds each source's own monthly growth across Year 1 (${fmtMoney0(currentMonthlySpend)}/mo combined start, blended ~${fmtPct(blendedGrowthPct,0)}/mo); HPE AI Hybrid Total reflects the ${gpuLabel} configuration as fixed infrastructure cost${overallOffloadPct<1 ? ' plus the remaining non-offloaded cloud spend, also growing' : ''}.`
+    : `No monthly growth applied — cloud-only spend shown flat at ${fmtMoney0(currentAnnualSpend)}/yr; HPE AI Hybrid Total reflects the ${gpuLabel} configuration as fixed infrastructure cost${overallOffloadPct<1 ? ' plus the remaining non-offloaded cloud spend' : ''}.`;
+
+  /* ---------- payback table ---------- */
+  const rows = [
+    ['Annual HPE AI Hybrid TCO', fmtMoney0(annualPcaiTco)],
+    ['Cloud-Only Spend (Year 1, w/ growth)', fmtMoney0(year1CloudSpend)],
+    ['HPE AI Hybrid Total (Year 1, w/ growth)', fmtMoney0(year1HybridCost)],
+    ['Annual Savings (Year 1, w/ growth)', fmtMoney0(annualSavingsGrowth)],
+    ['Monthly Savings (avg, Year 1)', fmtMoney0(monthlySavings)],
+    ['Payback Period (Months)', isFinite(paybackMonths) ? paybackMonths.toFixed(2) : '—'],
+    ['3-Year Net Savings (growth-adjusted)', fmtMoney0(netSavings3)],
+  ];
+  document.getElementById('paybackNote').textContent = blendedGrowthPct>0
+    ? `Cloud-only spend reflects each source's own monthly growth compounded across Year 1 (${fmtMoney0(currentAnnualSpend)} flat ×12 → ${fmtMoney0(year1CloudSpend)} with growth, blended ~${fmtPct(blendedGrowthPct,0)}/mo); savings and payback are calculated from that growth-adjusted figure against the HPE AI Hybrid total.`
+    : `No monthly growth applied — cloud-only spend shown flat at ${fmtMoney0(year1CloudSpend)}.`;
+  document.getElementById('paybackTable').innerHTML = rows.map(r=>`<tr><td>${r[0]}</td><td style="text-align:right;">${r[1]}</td></tr>`).join('');
+
+  /* ---------- assumptions summary (for on-screen review and print) ---------- */
+  const usageRows = usageSources.map(u=>{
+    const tokens = u.mode==='tokens' ? u.tokensDirect : u.aic*u.tokPerAic;
+    const modeLabel = u.mode==='tokens' ? 'Tokens' : 'AIC';
+    const offloadPct = u.offload!=null ? u.offload : 1;
+    const growthPct = u.growth!=null ? u.growth : 0.05;
+    return [
+      `${escapeHtml(u.name) || 'Untitled'} (${modeLabel})`,
+      `${fmtInt(tokens)} tok/mo · ${fmtMoneyCompact(u.spend||0)}/mo · ${Math.round(offloadPct*100)}% offload · ${Math.round(growthPct*100)}% growth`,
+    ];
+  });
+  usageRows.push(
+    ['Uncounted Tokens', fmtPct(inp.uncounted,0)],
+  );
+  document.getElementById('assumptionsUsageBody').innerHTML = usageRows.map(r=>`<tr><td>${r[0]}</td><td style="text-align:right;">${r[1]}</td></tr>`).join('');
+
+  const pcaiRows = [
+    ['GPU Type', escapeHtml(gpu.label)],
+    ['GPU Count', inp.h200],
+    ['Useful Capacity Factor', fmtPct(inp.capFactor,0)],
+    ['Annualized Capex', fmtMoney0(inp.capex)],
+    ['Operational Costs', fmtMoney0(inp.ops)],
+  ];
+  document.getElementById('assumptionsPcaiBody').innerHTML = pcaiRows.map(r=>`<tr><td>${r[0]}</td><td style="text-align:right;">${r[1]}</td></tr>`).join('');
+
+  document.getElementById('assumptionsMixBody').innerHTML = mixRows.map(r=>
+    `<tr><td>${escapeHtml(r.name)}</td><td style="text-align:right;">${fmtInt(r.tokS)}</td><td style="text-align:right;">${r.mix}%</td></tr>`
+  ).join('');
+
+  /* ---------- snapshot for scenario save ---------- */
+  lastResults = {
+    tco3Cloud, tco3Pcai, netSavings3, roi3Pct, paybackMonths,
+    annualPcaiTco, currentAnnualSpend, year1CloudSpend, capacityUtil,
+    gpuType: inp.gpuType, h200: inp.h200, months,
+  };
+}
+
+/* ---------------------------------------------------------
+   SCENARIOS — save / load / delete / compare
+--------------------------------------------------------- */
+async function persistScenarios(){
+  document.getElementById('scenarioStorageNote').textContent = hasCloudStorage
+    ? 'Scenarios save to your Claude account and persist across sessions.'
+    : 'Scenarios are kept for this browser session only (not saved to your account in this context).';
+  if(!hasCloudStorage) return;
+  try{
+    await window.storage.set('pcai_scenarios', JSON.stringify(scenarios), false);
+  }catch(e){
+    console.warn('Scenario storage unavailable, continuing in-session only:', e);
+    document.getElementById('scenarioStorageNote').textContent = 'Scenarios are kept for this browser session only (storage unavailable).';
+  }
+}
+
+async function hydrateScenarios(){
+  if(!hasCloudStorage){
+    document.getElementById('scenarioStorageNote').textContent = 'Scenarios are kept for this browser session only (not saved to your account in this context).';
+    return;
+  }
+  try{
+    const res = await window.storage.get('pcai_scenarios', false);
+    if(res && res.value){
+      scenarios = JSON.parse(res.value);
+      renderScenarioList();
+      renderScenarioComparison();
+    }
+    document.getElementById('scenarioStorageNote').textContent = 'Scenarios save to your Claude account and persist across sessions.';
+  }catch(e){
+    document.getElementById('scenarioStorageNote').textContent = 'Scenarios are kept for this browser session only.';
+  }
+}
+
+function resetToDefaults(){
+  document.getElementById('in_gpuType').value = DEFAULTS.gpuType;
+  document.getElementById('in_gpuCount').value = DEFAULTS.gpuCount;
+  document.getElementById('in_capfactor').value = DEFAULTS.capFactor;
+  document.getElementById('in_uncounted').value = DEFAULTS.uncounted;
+  document.getElementById('in_capex').value = DEFAULTS.capex;
+  document.getElementById('in_ops').value = DEFAULTS.ops;
+  opsManuallySet = false;
+  usageSources = JSON.parse(JSON.stringify(DEFAULT_USAGE_SOURCES));
+  mixRows = JSON.parse(JSON.stringify(DEFAULT_MIX_ROWS));
+  renderUsageSources();
+  renderMixTable();
+  document.querySelectorAll('.fmt-num').forEach(el=>formatWithCommas(el));
+  compute();
+}
+
+function saveScenario(){
+  if(!lastResults) return;
+  const nameInput = document.getElementById('scenarioName');
+  const name = nameInput.value.trim() || `Scenario ${scenarios.length+1}`;
+  const snap = {
+    id: 'sc_' + Date.now(),
+    name,
+    timestamp: Date.now(),
+    inputs: getInputs(),
+    opsManuallySet,
+    usageSources: JSON.parse(JSON.stringify(usageSources)),
+    mixRows: JSON.parse(JSON.stringify(mixRows)),
+    results: {
+      tco3Cloud: lastResults.tco3Cloud, tco3Pcai: lastResults.tco3Pcai,
+      netSavings3: lastResults.netSavings3, roi3Pct: lastResults.roi3Pct,
+      paybackMonths: lastResults.paybackMonths, gpuType: lastResults.gpuType, h200: lastResults.h200,
+    },
+  };
+  scenarios.push(snap);
+  if(scenarios.length > 6) scenarios.shift();
+  nameInput.value = '';
+  persistScenarios();
+  renderScenarioList();
+  renderScenarioComparison();
+}
+
+function loadScenario(id){
+  const s = scenarios.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('in_gpuType').value = s.inputs.gpuType || 'H200';
+  document.getElementById('in_gpuCount').value = s.inputs.h200 || 16;
+  document.getElementById('in_capfactor').value = s.inputs.capFactor;
+  document.getElementById('in_uncounted').value = s.inputs.uncounted;
+  document.getElementById('in_capex').value = s.inputs.capex;
+  document.getElementById('in_ops').value = s.inputs.ops;
+  // Treat the saved ops figure as intentional so it doesn't silently start
+  // auto-following capex again after load (respect what was explicitly saved).
+  opsManuallySet = (s.opsManuallySet !== undefined) ? s.opsManuallySet : true;
+  document.querySelectorAll('.fmt-num').forEach(el=>formatWithCommas(el));
+  // backward compatibility with scenarios saved before multiple usage sources, and
+  // before offload/spend/growth became per-source (older scenarios had one global
+  // offload %, one global spend, and one global growth rate)
+  const legacyOffload = (s.inputs.offload !== undefined) ? s.inputs.offload : 1;
+  const legacySpend = (s.inputs.spend !== undefined) ? s.inputs.spend : 0;
+  const legacyGrowth = (s.inputs.growth !== undefined) ? s.inputs.growth : 0.05;
+  usageSources = s.usageSources
+    ? JSON.parse(JSON.stringify(s.usageSources)).map(u => ({ offload: legacyOffload, spend: legacySpend, growth: legacyGrowth, ...u }))
+    : [{
+        name: 'GitHub Copilot',
+        mode: s.inputs.usageMode || 'aic',
+        aic: s.inputs.aic || 30000000,
+        tokPerAic: s.inputs.tokPerAic || 1000,
+        tokensDirect: s.inputs.tokensDirect || 30000000000,
+        offload: legacyOffload,
+        spend: legacySpend,
+        growth: legacyGrowth,
+      }];
+  mixRows = JSON.parse(JSON.stringify(s.mixRows));
+  renderUsageSources();
+  renderMixTable();
+  compute();
+}
+
+function deleteScenario(id){
+  scenarios = scenarios.filter(x=>x.id!==id);
+  persistScenarios();
+  renderScenarioList();
+  renderScenarioComparison();
+}
+
+function renderScenarioList(){
+  const wrap = document.getElementById('scenarioList');
+  if(scenarios.length===0){ wrap.innerHTML = ''; return; }
+  wrap.innerHTML = scenarios.map(s=>{
+    const gpuShort = (GPU_TYPES[s.inputs.gpuType] || {}).short || s.inputs.gpuType;
+    return `
+    <div class="scenario-card">
+      <div class="sc-name">${escapeHtml(s.name)}</div>
+      <div class="sc-stats">${gpuShort} (${s.inputs.h200}×) · ROI ${s.results.roi3Pct.toFixed(0)}% · ${fmtMoneyCompact(s.results.netSavings3)} net</div>
+      <div class="sc-actions">
+        <button class="sc-btn" data-act="load" data-id="${s.id}">Load</button>
+        <button class="sc-btn danger" data-act="delete" data-id="${s.id}">Delete</button>
+      </div>
+    </div>
+  `;
+  }).join('');
+  wrap.querySelectorAll('.sc-btn').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const id = e.target.dataset.id, act = e.target.dataset.act;
+      if(act==='load') loadScenario(id);
+      else if(act==='delete') deleteScenario(id);
+    });
+  });
+}
+
+function renderScenarioComparison(){
+  const empty = document.getElementById('scenarioEmptyState');
+  const wrap = document.getElementById('scenarioCompareWrap');
+  if(scenarios.length===0){
+    empty.style.display = 'block';
+    wrap.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  wrap.style.display = 'block';
+  document.getElementById('scenarioChart').innerHTML = buildGroupedBarSVG({
+    labels: scenarios.map(s=>s.name),
+    datasets: [
+      {name:'3-Yr Cloud TCO', values: scenarios.map(s=>s.results.tco3Cloud), color:'#D98C2B'},
+      {name:'3-Yr HPE AI Hybrid TCO', values: scenarios.map(s=>s.results.tco3Pcai), color:'#1E8F84'},
+    ],
+    yFormat: fmtMoneyCompact,
+  });
+  document.getElementById('scenarioTable').innerHTML = scenarios.map(s=>
+    `<tr><td>${escapeHtml(s.name)}</td><td>${s.results.roi3Pct.toFixed(0)}%</td><td>${fmtMoneyCompact(s.results.netSavings3)}</td></tr>`
+  ).join('');
+}
+
+/* ---------------------------------------------------------
+   WIRE UP
+--------------------------------------------------------- */
+[...ids, ...rangeIds].forEach(id=>{
+  document.getElementById(id).addEventListener('input', compute);
+});
+document.getElementById('in_capex').addEventListener('input', ()=>{
+  if(!opsManuallySet){
+    const capexVal = numVal('in_capex');
+    document.getElementById('in_ops').value = Math.round(capexVal*0.4).toLocaleString('en-US');
+  }
+  compute();
+});
+document.getElementById('in_ops').addEventListener('input', ()=>{
+  opsManuallySet = true;
+  compute();
+});
+document.querySelectorAll('.fmt-num').forEach(el=>{
+  el.addEventListener('focus', ()=>stripCommas(el));
+  el.addEventListener('blur', ()=>formatWithCommas(el));
+});
+function updatePrintHeader(){
+  const customer = document.getElementById('customerName').value.trim();
+  const preparer = document.getElementById('preparedBy').value.trim();
+  document.getElementById('printTitle').textContent = customer
+    ? `AI Usage & HPE AI Hybrid Tokenomics — ${customer}`
+    : 'AI Usage & HPE AI Hybrid Tokenomics Business Case';
+  document.getElementById('printSubtitle').textContent = `Prepared by ${preparer || '—'}`;
+  document.getElementById('printDate').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+}
+document.getElementById('customerName').addEventListener('input', e=>{
+  const v = e.target.value.trim();
+  document.querySelector('.brand-block h1').textContent = v ? `AI Usage & HPE AI Hybrid Business Case — ${v}` : 'AI Usage & HPE AI Hybrid Tokenomics';
+  updatePrintHeader();
+});
+document.getElementById('preparedBy').addEventListener('input', updatePrintHeader);
+
+document.getElementById('printBtn').addEventListener('click', ()=>{
+  updatePrintHeader();
+  window.print();
+});
+let _methodologyWasOpen = null;
+// SVG charts are plain DOM/vector markup — they need no special handling for print:
+// no resize call, no snapshot-to-image step, nothing that can race page load or an
+// export pipeline. The only print-specific step left is forcing the collapsible
+// Methodology section open so it's included in the printed output.
+window.addEventListener('beforeprint', ()=>{
+  const details = document.getElementById('methodologyDetails');
+  _methodologyWasOpen = details.open;
+  details.open = true;
+  updatePrintHeader();
+});
+window.addEventListener('afterprint', ()=>{
+  const details = document.getElementById('methodologyDetails');
+  if(_methodologyWasOpen !== null) details.open = _methodologyWasOpen;
+});
+
+document.getElementById('saveScenarioBtn').addEventListener('click', saveScenario);
+document.getElementById('resetDefaultsBtn').addEventListener('click', resetToDefaults);
+document.getElementById('addUsageSourceBtn').addEventListener('click', ()=>{
+  usageSources.push({name:'New usage', mode:'aic', aic:1000000, tokPerAic:1000, tokensDirect:1000000000, offload:1.0, spend:0, growth:0.05});
+  renderUsageSources();
+  compute();
+});
+document.getElementById('in_gpuType').addEventListener('input', compute);
+document.getElementById('in_gpuCount').addEventListener('input', compute);
+
+renderUsageSources();
+renderMixTable();
+populateModelPicker();
+populateGpuCountSelect();
+updatePrintHeader();
+compute();
+hydrateScenarios();
+</script>
+</body>
+</html>
